@@ -1,0 +1,80 @@
+@import "/var";
+
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+fieldset {
+    position: relative;
+    margin-top: 50px;
+    margin-right: 120px;
+
+    @media (max-width: 520px) {
+        margin-right: 40px;
+    }
+}
+
+.toggle__input {
+    line-height: 0;
+    font-size: 0;
+    display: inline-block;
+    margin: 0;
+}
+
+.toggle__input input {
+    display: block;
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.switch {
+    display: inline-block;
+    position: relative;
+    height: 30px;
+    width: 100px;
+    border-radius: 5px;
+    background: $trainBg;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+}
+
+.switch:before {
+    content: "";
+    display: block;
+    height: 30px;
+    width: 30px;
+    border-radius: 15%;
+    background-color: #fafafa;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .5);
+    position: absolute;
+    top: 0%;
+    left: 0%;
+}
+
+.toggle__text {
+    position: absolute;
+    top: 8px;
+    right: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+}
+
+.toggle__input input:checked+.switch {
+    background: $playBg;
+    transition: all 200ms ease-in-out;
+}
+
+.toggle__input input:checked+.switch:before {
+    left: 70px;
+    transition: all 200ms ease-in-out;
+}
+
+.toggle__input input:checked {
+    right: 30px;
+    transition: all 200ms ease-in-out;
+}
