@@ -16,7 +16,7 @@ body html {
     }
 }
 
-.menu__container {
+.header {
     width: 100%;
     margin: 0 auto;
     display: flex;
@@ -52,13 +52,37 @@ body html {
     }
 }
 
+.card__train {
+    background: #ffffff;
+}
+
 .card__img {
     width: 150px;
     height: 150px;
     border-radius: 50%;
     border: 8px solid #ffffff;
     background-repeat: no-repeat;
-    background-image: url('../img/cat.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.card__img_train {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 5%;
+    border: 0;
+    border-radius: 5px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.card__img_play {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: 5px;
+    background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
 }
@@ -68,7 +92,13 @@ body html {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.rotate {
+.card__text_train {
+    margin-bottom: 5%;
+    font-size: 2rem;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.card__rotate {
     position: absolute;
     right: 18px;
     bottom: 8px; 
@@ -76,7 +106,7 @@ body html {
 
 #path0 {
   &:hover {
-       fill: #435fcb; 
+       fill: rgba(9,233,236,1); 
     }
 }
 

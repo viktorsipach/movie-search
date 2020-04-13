@@ -1,4 +1,15 @@
 
-import '../css/style.css';
 import '../css/reset.css';
-import '../css/style.scss';
+import '../scss/style.scss';
+
+import cards from '../assets/cards.js'
+
+const changeImageToMainPage = () => {
+    const images = document.querySelectorAll('.card__img');
+    images.forEach((el,idx) => {
+        const img = cards[idx][idx].image
+        el.style.backgroundImage = `url(./assets/${img})`
+    })
+}
+
+changeImageToMainPage();

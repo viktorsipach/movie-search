@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const webpack = require('webpack');
 
@@ -94,7 +95,7 @@ const config = {
           {
             loader: 'file-loader',
             options: {
-              outputPath: 'img',
+              outputPath: 'assets/img',
               name: '[name].[ext]'
             }},
           {
@@ -128,10 +129,13 @@ const config = {
       template: './src/index.html',
       filename: './index.html'
     }),
-      new webpack.DefinePlugin({
+    new webpack.DefinePlugin({
       API_KEY: JSON.stringify(process.env.API_KEY),
       APP_ENV: JSON.stringify(process.env.APP_ENV)
-    })
+    }),
+    new CopyPlugin([
+      { from: './src/assets', to: 'assets' },
+    ])
   ],
 
   devServer: {
