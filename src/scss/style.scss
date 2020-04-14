@@ -23,7 +23,7 @@ body html {
     justify-content: space-between;
 }
 
-.wrapper__cards {
+.cards__container {
     display: flex;
     width: 100%;
     margin: 0 auto;
@@ -45,6 +45,7 @@ body html {
     align-items: center;
     border-radius: 5px;
     box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.75);
+   
     cursor: pointer;
 
     &:hover {
@@ -52,9 +53,6 @@ body html {
     }
 }
 
-.card__train {
-    background: #ffffff;
-}
 
 .card__img {
     width: 150px;
@@ -75,6 +73,7 @@ body html {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.5);
 }
 
 .card__img_play {
@@ -87,15 +86,24 @@ body html {
     background-position: center;
 }
 
-.card__text {
+.card__word {
     font-size: 2rem;
     font-family: Arial, Helvetica, sans-serif;
+    color: #ffffff;
 }
 
-.card__text_train {
+.card__word_train {
     margin-bottom: 5%;
     font-size: 2rem;
     font-family: Arial, Helvetica, sans-serif;
+    color: #ffffff;
+}
+
+.card__translate {
+    margin-bottom: 5%;
+    font-size: 1.6rem;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #ffffff;
 }
 
 .card__rotate {
@@ -112,4 +120,9 @@ body html {
 
 .hidden {
     display: none;
+}
+
+.rotate {
+    transition: all 600ms ease-in-out;
+    transform: rotateY(180deg);
 }
