@@ -197,33 +197,40 @@ const addClickTrainHandler = () => {
     })
 }
 
+const rotateCard = (curCard) => {
+    const cardRotateDuration = 400;
+    const word = curCard.children[1]
+    const translation = curCard.children[2]
+    curCard.removeAttribute('style')
+    curCard.classList.add('rotate')
+    setTimeout(() => {
+        translation.classList.remove('hidden')
+        word.classList.add('hidden')
+        curCard.style.transform = 'rotateY(0deg)'
+        curCard.classList.remove('rotate')
+    },cardRotateDuration);
+
+    curCard.addEventListener('mouseleave', (e) => {
+        curCard.removeAttribute('style')
+        curCard.classList.add('rotate')
+        setTimeout(() => {
+            translation.classList.add('hidden')
+            word.classList.remove('hidden')
+            curCard.style.transform = 'rotateY(0deg)'
+            curCard.classList.remove('rotate')
+    }, cardRotateDuration);
+    },{once: true})
+}
+
 const addClickRotateHandler = () => {
-    const cardFlipDuration = 400;
     const cardsContainer = document.querySelector('.cards__container')
     cardsContainer.addEventListener('click', (e) => {
         if (e.target.id === 'path0') {
             const curCard = e.path[3]
-            const word = curCard.children[1]
-            const translation = curCard.children[2]
-            curCard.removeAttribute('style')
-            curCard.classList.add('rotate')
-            setTimeout(() => {
-                translation.classList.remove('hidden')
-                word.classList.add('hidden')
-                curCard.style.transform = 'rotateY(0deg)'
-                curCard.classList.remove('rotate')
-            }, cardFlipDuration );
-            curCard.addEventListener('mouseleave', (e) => {
-                curCard.removeAttribute('style')
-                curCard.classList.add('rotate')
-                setTimeout(() => {
-                    translation.classList.add('hidden')
-                    word.classList.remove('hidden')
-                    curCard.style.transform = 'rotateY(0deg)'
-                    curCard.classList.remove('rotate')
-            }, cardFlipDuration );
-            },{once: true})
-              
+            rotateCard(curCard)   
+        } else if (e.target.classList.contains('card__rotate')) {
+            const curCard = e.path[1]
+            rotateCard(curCard)
         }
     })
 }
