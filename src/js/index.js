@@ -3,6 +3,9 @@ import '../scss/style.scss';
 
 import cardsData from '../assets/cards'
 
+const bgTrain = 'linear-gradient(0deg, rgba(9,210,90,1) 0%, rgba(9,233,236,1) 84%)'
+const bgPlay = 'linear-gradient(0deg, rgba(231,236,9,1) 0%, rgba(241,40,5,1) 84%)'
+
 const modeMain = true
 let modeTrain = true
 let modePlay = false
@@ -63,9 +66,18 @@ const addDomElements = () => {
     document.querySelector('.wrapper').append(container);
 }
 
-const makeMainPage = () => {
+const addMainPage = () => {
+    const cards = document.querySelectorAll('.card');
     const images = document.querySelectorAll('.card__img');
     const words = document.querySelectorAll('.card__word');
+    cards.forEach((el) => {
+        const card = el
+        if (modeTrain) {
+            card.style.background = `${bgTrain}`
+        } else {
+            card.style.background = `${bgPlay}`
+        }
+    })
     images.forEach((el, idx) => {
         const img = cardsData[idx][idx].image
         const element = el
@@ -79,8 +91,6 @@ const makeMainPage = () => {
 }
 
 const addClickToggleHandler = () => {
-    const bgTrain = 'linear-gradient(0deg, rgba(9,210,90,1) 0%, rgba(9,233,236,1) 84%)'
-    const bgPlay = 'linear-gradient(0deg, rgba(231,236,9,1) 0%, rgba(241,40,5,1) 84%)'
     const toggle = document.querySelector('.toggle')
     const switcher = document.getElementById('switch')
     const text = document.querySelector('.toggle__text')
@@ -115,8 +125,7 @@ const addClickToggleHandler = () => {
     })
 }
 
-const addTrainPage = (target) => {
-    const { id } = target
+const addTrainPage = (id) => {
     const cardsRotate = document.querySelectorAll('.card__rotate');
     const images = document.querySelectorAll('.card__img');
     const words = document.querySelectorAll('.card__word');
@@ -145,8 +154,7 @@ const addTrainPage = (target) => {
     })
 }
 
-const addPlayPage = (target) => {
-    const { id } = target
+const addPlayPage = (id) => {
     const cards = document.querySelectorAll('.card');
     const images = document.querySelectorAll('.card__img');
     const words = document.querySelectorAll('.card__word');
@@ -222,28 +230,62 @@ const addClickRotateHandler = () => {
 
 const addClickCardHandler = () => {
     const cards = document.querySelector('.cards__container')
-        // const img = document.querySelector('.card__img')
     cards.addEventListener('click', (e) => {
         if (e.target.classList.contains('card')) {
-            const card = e.target
+            const { id } = e.target
             if (modeTrain) {
-                addTrainPage(card)
+                addTrainPage(id)
                 addClickTrainHandler()
                 addClickRotateHandler()
-                modeTrain = false
             } else if (modePlay) {
-                addPlayPage(card)
-                modePlay = false
+                addPlayPage(id)
+            }
+        }
+    })
+}
+
+const menuHidden = () => {
+    const switcher = document.querySelector('.menu__switcher')
+    const menu = document.querySelector('.menu')
+    switcher.addEventListener('blur', () => {
+            switcher.checked = false
+    })
+}
+
+const addClickMenuHandler = () => {
+    const menu = document.querySelector('.menu')
+    
+
+    menu.addEventListener('click', (e) => {
+        const container = document.querySelector('.cards__container')
+        if (e.target.classList.contains('menu__item')) {
+            const { title } = e.target
+            if (title === 'main') {
+                container.remove()
+                addDomElements()
+                addMainPage()
+                addClickCardHandler()
+            } else {
+                container.remove()
+                addDomElements()
+                if (modeTrain) {
+                    addTrainPage(title)
+                    addClickTrainHandler()
+                    addClickRotateHandler()
+                } else if (modePlay) {
+                    addPlayPage(title)
+                }
             }
         }
     })
 }
 
 
-
 window.onload = () => {
     addDomElements()
-    makeMainPage()
+    addMainPage()
     addClickToggleHandler()
     addClickCardHandler()
+    addClickMenuHandler()
+    menuHidden()
 };
