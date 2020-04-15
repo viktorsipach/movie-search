@@ -3,7 +3,7 @@ import '../scss/style.scss';
 
 import cardsData from '../assets/cards'
 
-let modeMain = true
+const modeMain = true
 let modeTrain = true
 let modePlay = false
 
@@ -11,7 +11,7 @@ const addDomElements = () => {
     const container = document.createElement('div')
     container.classList = "cards__container"
     container.innerHTML = `
-            <div class="card id="0">
+            <div class="card" id="0">
                 <div class="card__img"></div>
                 <p class="card__word"></p>
                 <p class="card__translate"></p>
@@ -64,18 +64,18 @@ const addDomElements = () => {
 }
 
 const makeMainPage = () => {
-        const images = document.querySelectorAll('.card__img');
-        const words = document.querySelectorAll('.card__word');
-        images.forEach((el, idx) => {
-            const img = cardsData[idx][idx].image
-            const element = el
-            element.style.backgroundImage = `url(./assets/${img})`
-        })
-        words.forEach((el, idx) => {
-            const text = cardsData[cardsData.length - 1][idx]
-            const element = el
-            element.innerHTML = `${text}`
-        })
+    const images = document.querySelectorAll('.card__img');
+    const words = document.querySelectorAll('.card__word');
+    images.forEach((el, idx) => {
+        const img = cardsData[idx][idx].image
+        const element = el
+        element.style.backgroundImage = `url(./assets/${img})`
+    })
+    words.forEach((el, idx) => {
+        const text = cardsData[cardsData.length - 1][idx]
+        const element = el
+        element.innerHTML = `${text}`
+    })
 }
 
 const addClickToggleHandler = () => {
@@ -86,8 +86,8 @@ const addClickToggleHandler = () => {
     const text = document.querySelector('.toggle__text')
     const menu = document.querySelector('.menu')
     const cards = document.querySelectorAll('.card');
-    const words = document.querySelectorAll('.card__word');
-    const images = document.querySelectorAll('.card__img');
+    // const words = document.querySelectorAll('.card__word');
+    // const images = document.querySelectorAll('.card__img');
     toggle.addEventListener('click', () => {
         if (!switcher.checked) {
             switcher.checked = true
@@ -116,8 +116,7 @@ const addClickToggleHandler = () => {
 }
 
 const addTrainPage = (target) => {
-    const id = target.id
-    const cards = document.querySelectorAll('.card');
+    const { id } = target
     const cardsRotate = document.querySelectorAll('.card__rotate');
     const images = document.querySelectorAll('.card__img');
     const words = document.querySelectorAll('.card__word');
@@ -129,27 +128,26 @@ const addTrainPage = (target) => {
         element.classList.add('card__img_train')
     })
     words.forEach((el, idx) => {
-        const word = cardsData[id][idx].word
+        const { word } = cardsData[id][idx]
         const element = el
         element.innerHTML = `${word}`
         element.classList.add('card__word_train')
     })
     translations.forEach((el, idx) => {
-        const translation = cardsData[id][idx].translation
+        const { translation } = cardsData[id][idx]
         const element = el
         element.innerHTML = `${translation}`
         element.classList.add('hidden')
     })
-    cardsRotate.forEach((el, idx) => {
+    cardsRotate.forEach((el) => {
         const element = el
         element.classList.remove('hidden')
     })
 }
 
 const addPlayPage = (target) => {
-    const id = target.id
+    const { id } = target
     const cards = document.querySelectorAll('.card');
-    const cardsRotate = document.querySelectorAll('.card__rotate');
     const images = document.querySelectorAll('.card__img');
     const words = document.querySelectorAll('.card__word');
     const translations = document.querySelectorAll('.card__translate');
@@ -160,16 +158,16 @@ const addPlayPage = (target) => {
         element.classList.add('card__img_play')
     })
     words.forEach((el, idx) => {
-        const word = cardsData[id][idx].word
+        const { word } = cardsData[id][idx]
         const element = el
         element.innerHTML = `${word}`
         element.classList.add('hidden')
     })
-    translations.forEach((el, idx) => {
+    translations.forEach((el) => {
         const element = el
         element.style.margin = '0'
     })
-    cards.forEach((el, idx) => {
+    cards.forEach((el) => {
         const element = el
         element.style.height = '240px'
         element.style.background = 'none'
@@ -181,7 +179,7 @@ const play = (word) => {
     audio.play()
 }
 
-const addClickTrainHandler  = () => {
+const addClickTrainHandler = () => {
     const cards = document.querySelector('.cards__container')
     cards.addEventListener('click', (e) => {
         if (e.target.classList.contains('card__img')) {
@@ -191,43 +189,57 @@ const addClickTrainHandler  = () => {
     })
 }
 
-const addClickCardHandler = () => {
-    const cards = document.querySelector('.cards__container')
-    const img = document.querySelector('.card__img')
-    cards.addEventListener('click', (e) => {
-        if (e.target.classList.contains('card')) {
-            const card = e.target
-            if (modeTrain) {
-                addTrainPage(card)
-                addClickTrainHandler() 
-                addClickRotateHandler()
-                modeTrain = false
-            } else if (modePlay) {
-                addPlayPage(card)
-                modePlay = false
-            } 
-        }
-    })
-}
-
 const addClickRotateHandler = () => {
+    const cardFlipDuration = 400;
     const cardsContainer = document.querySelector('.cards__container')
-    const cards = document.querySelectorAll('.card')
-    
     cardsContainer.addEventListener('click', (e) => {
         if (e.target.id === 'path0') {
             const curCard = e.path[3]
             const word = curCard.children[1]
             const translation = curCard.children[2]
+            curCard.removeAttribute('style')
             curCard.classList.add('rotate')
             setTimeout(() => {
-                    translation.classList.remove('hidden')
-                    word.classList.add('hidden')
+                translation.classList.remove('hidden')
+                word.classList.add('hidden')
+                curCard.style.transform = 'rotateY(0deg)'
+                curCard.classList.remove('rotate')
+            }, cardFlipDuration );
+            curCard.addEventListener('mouseleave', (e) => {
+                curCard.removeAttribute('style')
+                curCard.classList.add('rotate')
+                setTimeout(() => {
+                    translation.classList.add('hidden')
+                    word.classList.remove('hidden')
                     curCard.style.transform = 'rotateY(0deg)'
-            }, 400);
-        }       
+                    curCard.classList.remove('rotate')
+            }, cardFlipDuration );
+            },{once: true})
+              
+        }
     })
 }
+
+const addClickCardHandler = () => {
+    const cards = document.querySelector('.cards__container')
+        // const img = document.querySelector('.card__img')
+    cards.addEventListener('click', (e) => {
+        if (e.target.classList.contains('card')) {
+            const card = e.target
+            if (modeTrain) {
+                addTrainPage(card)
+                addClickTrainHandler()
+                addClickRotateHandler()
+                modeTrain = false
+            } else if (modePlay) {
+                addPlayPage(card)
+                modePlay = false
+            }
+        }
+    })
+}
+
+
 
 window.onload = () => {
     addDomElements()
