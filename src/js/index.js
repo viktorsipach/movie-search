@@ -4,11 +4,16 @@ import '../scss/style.scss';
 import cardsData from '../assets/cards'
 
 const bgTrain = 'linear-gradient(0deg, rgba(9,210,90,1) 0%, rgba(9,233,236,1) 84%)'
-const bgPlay = 'linear-gradient(0deg, rgba(231,236,9,1) 0%, rgba(241,40,5,1) 84%)'
+const bgPlay = 'linear-gradient(0deg, rgba(245, 175, 25, 1) 0%,  rgba(241, 49, 17, 1) 50%)'
+const audioCorrect = 'https://raw.githubusercontent.com/rolling-scopes-school/tasks/master/tasks/rslang/english-for.kids.data/audio/correct.mp3'
+const audioError = 'https://raw.githubusercontent.com/rolling-scopes-school/tasks/master/tasks/rslang/english-for.kids.data/audio/error.mp3'
+
+const arrWords = []
 
 const modeMain = true
 let modeTrain = true
 let modePlay = false
+let word = null
 
 const addDomElements = () => {
     const container = document.createElement('div')
@@ -159,6 +164,11 @@ const addPlayPage = (id) => {
     const images = document.querySelectorAll('.card__img');
     const words = document.querySelectorAll('.card__word');
     const translations = document.querySelectorAll('.card__translate');
+    const btn = document.createElement('button')
+    btn.classList = 'btn__start'
+    btn.innerHTML = 'Start game'
+    document.querySelector('.wrapper').append(btn);
+
     images.forEach((el, idx) => {
         const img = cardsData[id][idx].image
         const element = el
@@ -197,7 +207,70 @@ const addClickTrainHandler = () => {
     })
 }
 
-const rotateCard = (curCard) => {
+const addClickPlayHandler = () => {
+    const cards = document.querySelector('.cards__container')
+    cards.addEventListener('click', (e) => {
+        if (event.target.classList.contains('card__img')) {
+            const clickedWord = event.target.nextElementSibling.innerText
+            gameHandler(clickedWord)
+        }
+    })
+}
+
+const gameHandler = (clickedWord) => {
+   if (clickedWord === word) {
+       const audio = new Audio(audioCorrect)
+       audio.play()
+       setTimeout(getWord, 1500)
+      // getWord()
+    } else {
+        const audio = new Audio(audioError)
+        audio.play()
+    }
+}
+
+const getWordsForGame = () => {
+    const cards = document.querySelectorAll('.card')
+    const wordsNodeList = document.querySelectorAll('.card__word');
+    
+    wordsNodeList.forEach((el => {
+        const word = el.innerText
+        arrWords.push(word)
+    }))
+    arrWords.sort(() => { return Math.random() - 0.5})
+    
+}
+
+const getWord = () => {
+    if (arrWords.length > 0) {
+        word = arrWords.pop()
+        play(word)
+    }
+}
+
+const addClickStartGameHandler = (word) => {
+    const btn = document.querySelector('.btn__start')
+    btn.addEventListener('click', (e) => {
+        const textBtn = e.target.innerHTML
+        if (textBtn === 'Start game') {
+            const img = document.createElement('img')
+            img.classList = 'repeat'
+            img.src='./assets/img/repeat.svg'
+            btn.innerHTML = ''
+            btn.append(img)
+            btn.classList.add('active__btn')
+            getWordsForGame()
+            addClickPlayHandler()
+            getWord()
+        } else if (word !== undefined) {
+            play(word)
+        }
+       
+    }, { once: true })
+}
+
+const rotateCard = (card) => {
+    const curCard = card
     const cardRotateDuration = 400;
     const word = curCard.children[1]
     const translation = curCard.children[2]
@@ -208,9 +281,9 @@ const rotateCard = (curCard) => {
         word.classList.add('hidden')
         curCard.style.transform = 'rotateY(0deg)'
         curCard.classList.remove('rotate')
-    },cardRotateDuration);
+    }, cardRotateDuration);
 
-    curCard.addEventListener('mouseleave', (e) => {
+    curCard.addEventListener('mouseleave', () => {
         curCard.removeAttribute('style')
         curCard.classList.add('rotate')
         setTimeout(() => {
@@ -218,8 +291,8 @@ const rotateCard = (curCard) => {
             word.classList.remove('hidden')
             curCard.style.transform = 'rotateY(0deg)'
             curCard.classList.remove('rotate')
-    }, cardRotateDuration);
-    },{once: true})
+        }, cardRotateDuration);
+    }, { once: true })
 }
 
 const addClickRotateHandler = () => {
@@ -227,7 +300,7 @@ const addClickRotateHandler = () => {
     cardsContainer.addEventListener('click', (e) => {
         if (e.target.id === 'path0') {
             const curCard = e.path[3]
-            rotateCard(curCard)   
+            rotateCard(curCard)
         } else if (e.target.classList.contains('card__rotate')) {
             const curCard = e.path[1]
             rotateCard(curCard)
@@ -246,6 +319,7 @@ const addClickCardHandler = () => {
                 addClickRotateHandler()
             } else if (modePlay) {
                 addPlayPage(id)
+                addClickStartGameHandler()
             }
         }
     })
@@ -253,20 +327,27 @@ const addClickCardHandler = () => {
 
 const menuHidden = () => {
     const switcher = document.querySelector('.menu__switcher')
-    const menu = document.querySelector('.menu')
     switcher.addEventListener('blur', () => {
-            switcher.checked = false
+        switcher.checked = false
     })
 }
 
 const addClickMenuHandler = () => {
     const menu = document.querySelector('.menu')
-    
+    const links = document.querySelectorAll('.menu__item')
 
     menu.addEventListener('click', (e) => {
         const container = document.querySelector('.cards__container')
         if (e.target.classList.contains('menu__item')) {
+            e.preventDefault()
             const { title } = e.target
+
+            links.forEach((link) => {
+                if (link.classList.contains('active')) {
+                    link.classList.remove('active')
+                }
+            })
+            e.target.classList.add('active')
             if (title === 'main') {
                 container.remove()
                 addDomElements()

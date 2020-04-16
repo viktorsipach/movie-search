@@ -1,7 +1,6 @@
 @import "./burger-menu";
 @import "./toggle";
 @import "./var";
-
 body html {
     font-size: 10px;
 }
@@ -10,9 +9,10 @@ body html {
     width: 90%;
     height: 100%;
     margin: 0 auto;
-
+    display: flex;
+    flex-direction: column;
     @media (max-width: 980px) {
-    width: 100%;
+        width: 100%;
     }
 }
 
@@ -28,9 +28,9 @@ body html {
     width: 100%;
     margin: 0 auto;
     flex-wrap: wrap;
-    justify-content:center;
+    justify-content: center;
     padding-top: 50px;
-    padding-bottom: 50px;
+    padding-bottom: 30px;
 }
 
 .card {
@@ -44,15 +44,12 @@ body html {
     justify-content: space-evenly;
     align-items: center;
     border-radius: 5px;
-    box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.75);
-   
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.75);
     cursor: pointer;
-
     &:hover {
-       box-shadow: 0px 10px 17px 1px rgba(0,0,0,0.5);
+        box-shadow: 0px 10px 17px 1px rgba(0, 0, 0, 0.5);
     }
 }
-
 
 .card__img {
     width: 150px;
@@ -73,7 +70,7 @@ body html {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.5);
 }
 
 .card__img_play {
@@ -109,15 +106,16 @@ body html {
 .card__rotate {
     position: absolute;
     right: 18px;
-    bottom: 8px; 
+    bottom: 8px;
+    transition: all 200ms ease-in-out;
     &:hover {
-      transform: rotateY(180deg)
+        transform: rotateY(180deg)
     }
 }
 
 #path0 {
-  &:hover {
-       fill: rgba(9,233,236,1); 
+    &:hover {
+        fill: rgba(9, 233, 236, 1);
     }
 }
 
@@ -128,4 +126,38 @@ body html {
 .rotate {
     transition: all 600ms ease-in-out;
     transform: rotateY(180deg);
+}
+
+.btn__start {
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+    font-size: 1.8rem;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #ffffff;
+    border-radius: 5px;
+    border: 0;
+    align-self: center;
+    margin-bottom: 5%;
+    background: $playBg;
+    cursor:pointer;
+    transition: all 100ms ease-in-out;
+
+    &:hover {
+       background: linear-gradient(0deg, rgba(241, 49, 17, 1) 0%, rgba(245, 175, 25, 1) 80%)
+    }
+
+    @media (max-width: 765px) {
+        width: 75%;
+    }
+}
+
+.repeat {
+    width: 40px;
+}
+
+.active__btn {
+    width: 5%;
+    border-radius: 50%;
 }
