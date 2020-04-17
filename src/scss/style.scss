@@ -29,7 +29,7 @@ body html {
     margin: 0 auto;
     flex-wrap: wrap;
     justify-content: center;
-    padding-top: 50px;
+    padding-top: 30px;
     padding-bottom: 30px;
 }
 
@@ -128,8 +128,16 @@ body html {
     transform: rotateY(180deg);
 }
 
+.wrapper__btn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 1%;
+    margin-bottom: 3%;
+}
+
 .btn__start {
-    width: 30%;
+    width: 50%;
     display: flex;
     justify-content: center;
     padding: 5px;
@@ -139,13 +147,16 @@ body html {
     border-radius: 5px;
     border: 0;
     align-self: center;
-    margin-bottom: 5%;
     background: $playBg;
     cursor:pointer;
     transition: all 100ms ease-in-out;
 
     &:hover {
        background: linear-gradient(0deg, rgba(241, 49, 17, 1) 0%, rgba(245, 175, 25, 1) 80%)
+    }
+
+    @media (max-width: 960px) {
+        width: 75%;
     }
 
     @media (max-width: 765px) {
@@ -160,4 +171,32 @@ body html {
 .active__btn {
     width: 5%;
     border-radius: 50%;
+}
+
+.not-active {
+    opacity: 0.6;
+}
+
+.stars {
+    width: 85%;
+    display: flex;
+    overflow: hidden;
+    flex-direction: row-reverse;
+}
+
+.star {
+    width: 40px;
+    height: 40px;
+}
+
+.emoji {
+    margin-top: 5%;
+    font-size: 15rem;
+    align-self: center;
+    text-align: center;
+}
+.emoji__text {
+    margin-bottom: 15%;
+    font-size: 2.2rem;
+    color:red;
 }

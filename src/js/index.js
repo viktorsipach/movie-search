@@ -8,17 +8,18 @@ const bgPlay = 'linear-gradient(0deg, rgba(245, 175, 25, 1) 0%,  rgba(241, 49, 1
 const audioCorrect = 'https://raw.githubusercontent.com/rolling-scopes-school/tasks/master/tasks/rslang/english-for.kids.data/audio/correct.mp3'
 const audioError = 'https://raw.githubusercontent.com/rolling-scopes-school/tasks/master/tasks/rslang/english-for.kids.data/audio/error.mp3'
 
-const arrWords = []
+const arrWords = [];
 
-const modeMain = true
-let modeTrain = true
-let modePlay = false
-let word = null
+let modeTrain = true;
+let modePlay = false;
+let hiddenWord = null;
+let error = 0;
 
 const addDomElements = () => {
-    const container = document.createElement('div')
-    container.classList = "cards__container"
-    container.innerHTML = `
+    error = 0;
+    const container = document.createElement('div');
+    container.classList = 'cards__container';
+    container.innerHTML = `<div class="stars"></div>
             <div class="card" id="0">
                 <div class="card__img"></div>
                 <p class="card__word"></p>
@@ -75,6 +76,7 @@ const addMainPage = () => {
     const cards = document.querySelectorAll('.card');
     const images = document.querySelectorAll('.card__img');
     const words = document.querySelectorAll('.card__word');
+
     cards.forEach((el) => {
         const card = el
         if (modeTrain) {
@@ -96,36 +98,59 @@ const addMainPage = () => {
 }
 
 const addClickToggleHandler = () => {
+    const links = document.querySelectorAll('.menu__item')
     const toggle = document.querySelector('.toggle')
     const switcher = document.getElementById('switch')
     const text = document.querySelector('.toggle__text')
     const menu = document.querySelector('.menu')
-    const cards = document.querySelectorAll('.card');
-    // const words = document.querySelectorAll('.card__word');
-    // const images = document.querySelectorAll('.card__img');
+  
+    let curId = null;
+
     toggle.addEventListener('click', () => {
-        if (!switcher.checked) {
+        const container = document.querySelector('.cards__container')
+        links.forEach((el) => {
+            if (el.classList.contains('active')) {
+                curId = el.title
+            }
+        })
+
+       if (!switcher.checked) {
             switcher.checked = true
+            modePlay = true
+            modeTrain = false
             text.classList.add('text__right')
             text.innerHTML = 'Play'
             menu.style.background = `${bgPlay}`
-            modePlay = true
-            modeTrain = false
-            cards.forEach((el) => {
-                const card = el
-                card.style.background = `${bgPlay}`
-            })
+            if (curId === 'main') {
+                container.remove()
+                addDomElements()
+                addMainPage()
+                addClickCardHandler()
+            } else {
+                container.remove()
+                addDomElements()
+                addPlayPage(curId)
+                addClickStartGameHandler()
+            }
         } else {
             switcher.checked = false
+            modePlay = false
+            modeTrain = true
             text.classList.remove('text__right')
             text.innerHTML = 'Train'
             menu.style.background = `${bgTrain}`
-            modePlay = false
-            modeTrain = true
-            cards.forEach((el) => {
-                const card = el
-                card.style.background = `${bgTrain}`
-            })
+            if (curId === 'main') {
+                container.remove()
+                addDomElements()
+                addMainPage()
+                addClickCardHandler()
+            } else {
+                container.remove()
+                addDomElements()
+                addTrainPage(curId)
+                addClickTrainHandler()
+                addClickRotateHandler()
+            }
         }
     })
 }
@@ -160,26 +185,27 @@ const addTrainPage = (id) => {
 }
 
 const addPlayPage = (id) => {
+    const container = document.querySelector('.cards__container');
     const cards = document.querySelectorAll('.card');
     const images = document.querySelectorAll('.card__img');
     const words = document.querySelectorAll('.card__word');
     const translations = document.querySelectorAll('.card__translate');
-    const btn = document.createElement('button')
-    btn.classList = 'btn__start'
-    btn.innerHTML = 'Start game'
-    document.querySelector('.wrapper').append(btn);
+    const btnWrapper = document.createElement('div');
+    btnWrapper.classList = 'wrapper__btn'
+    btnWrapper.innerHTML = `<button class='btn__start'>Start game</button>`
+    container.append(btnWrapper);
 
     images.forEach((el, idx) => {
-        const img = cardsData[id][idx].image
-        const element = el
-        element.style.backgroundImage = `url(./assets/${img})`
-        element.classList.add('card__img_play')
+        const img = cardsData[id][idx].image;
+        const element = el;
+        element.style.backgroundImage = `url(./assets/${ img })`;
+        element.classList.add('card__img_play');
     })
     words.forEach((el, idx) => {
-        const { word } = cardsData[id][idx]
-        const element = el
-        element.innerHTML = `${word}`
-        element.classList.add('hidden')
+        const { word } = cardsData[id][idx];
+        const element = el;
+        element.innerHTML = `${ word }`;
+        element.classList.add('hidden');
     })
     translations.forEach((el) => {
         const element = el
@@ -193,7 +219,7 @@ const addPlayPage = (id) => {
 }
 
 const play = (word) => {
-    const audio = new Audio(`https://wooordhunt.ru/data/sound/word/us/mp3/${word}.mp3`)
+    const audio = new Audio(`https://wooordhunt.ru/data/sound/word/us/mp3/${word}.mp3`);
     audio.play()
 }
 
@@ -207,71 +233,124 @@ const addClickTrainHandler = () => {
     })
 }
 
+const getWordsForGame = () => {
+    const wordsNodeList = document.querySelectorAll('.card__word');
+    arrWords.length = 0;
+    wordsNodeList.forEach((el => {
+        const word = el.innerText
+        arrWords.push(word)
+    }))
+    arrWords.sort(() => { return Math.random() - 0.5 })
+}
+
+const finishGame = () => {
+    if (error === 0) {
+        const showEmoji = 2000;
+        const container = document.querySelector('.cards__container')
+        const emoji = document.createElement('div');
+        emoji.classList = 'emoji'
+        emoji.innerHTML = `<p class='emoji__text'>You Win!</p><p>&#128588</p>`
+        container.remove()
+        document.querySelector('.wrapper').append(emoji)
+        setTimeout(() => {
+            container.remove()
+            emoji.remove()
+            addDomElements()
+            addMainPage()
+            addClickToggleHandler()
+            addClickCardHandler()
+            addClickMenuHandler()
+            menuHidden()
+        }, showEmoji);
+    } else {
+        const showEmoji = 2000;
+        const container = document.querySelector('.cards__container')
+        const emoji = document.createElement('div');
+        emoji.classList = 'emoji'
+        emoji.innerHTML = `<p class='emoji__text'>Error ${error}!</p><p>&#128532</p>` 
+        container.remove()
+        document.querySelector('.wrapper').append(emoji)
+        setTimeout(() => {
+            container.remove();
+            emoji.remove();
+            addDomElements();
+            addMainPage();
+            addClickToggleHandler();
+            addClickCardHandler();
+            addClickMenuHandler();
+            menuHidden();
+        }, showEmoji);
+    }  
+}
+
+const getWord = () => {
+    if (arrWords.length > 0) {
+        hiddenWord = arrWords.pop()
+        play(hiddenWord)
+    } else {
+       finishGame()
+    }
+}
+
+const gameHandler = (clickedWord) => {
+    const starsContainer = document.querySelector('.stars');
+    if (clickedWord === hiddenWord) {
+        const audio = new Audio(audioCorrect);
+        const stopAudio = 1000;
+        audio.play()
+        setTimeout(getWord, stopAudio)
+        const star = document.createElement('img');
+        star.src = './assets/img/star-win.svg';
+        star.classList = 'star';
+        starsContainer.append(star);
+    } else {
+        error++;
+        const audio = new Audio(audioError);
+        audio.play();
+        const star = document.createElement('img');
+        star.src = './assets/img/star.svg';
+        star.classList = 'star';
+        starsContainer.append(star);
+    }
+}
+
 const addClickPlayHandler = () => {
     const cards = document.querySelector('.cards__container')
     cards.addEventListener('click', (e) => {
-        if (event.target.classList.contains('card__img')) {
-            const clickedWord = event.target.nextElementSibling.innerText
+        if (e.target.classList.contains('card__img') && !e.target.classList.contains('not-active')) {
+            const clickedWord = e.target.nextElementSibling.innerText
+            if (clickedWord === hiddenWord) {
+                e.target.classList.add('not-active')
+            }
             gameHandler(clickedWord)
         }
     })
 }
 
-const gameHandler = (clickedWord) => {
-   if (clickedWord === word) {
-       const audio = new Audio(audioCorrect)
-       audio.play()
-       setTimeout(getWord, 1500)
-      // getWord()
-    } else {
-        const audio = new Audio(audioError)
-        audio.play()
-    }
-}
-
-const getWordsForGame = () => {
-    const cards = document.querySelectorAll('.card')
-    const wordsNodeList = document.querySelectorAll('.card__word');
-    
-    wordsNodeList.forEach((el => {
-        const word = el.innerText
-        arrWords.push(word)
-    }))
-    arrWords.sort(() => { return Math.random() - 0.5})
-    
-}
-
-const getWord = () => {
-    if (arrWords.length > 0) {
-        word = arrWords.pop()
-        play(word)
-    }
-}
-
-const addClickStartGameHandler = (word) => {
+const addClickStartGameHandler = () => {
     const btn = document.querySelector('.btn__start')
     btn.addEventListener('click', (e) => {
         const textBtn = e.target.innerHTML
         if (textBtn === 'Start game') {
             const img = document.createElement('img')
             img.classList = 'repeat'
-            img.src='./assets/img/repeat.svg'
+            img.src = './assets/img/repeat.svg'
             btn.innerHTML = ''
             btn.append(img)
             btn.classList.add('active__btn')
             getWordsForGame()
             addClickPlayHandler()
             getWord()
-        } else if (word !== undefined) {
-            play(word)
+        } else {
+            play(hiddenWord)
         }
-       
-    }, { once: true })
+
+    })
 }
 
 const rotateCard = (card) => {
     const curCard = card
-    const cardRotateDuration = 400;
+    const cardRotateDuration = 400
     const word = curCard.children[1]
     const translation = curCard.children[2]
     curCard.removeAttribute('style')
@@ -310,9 +389,16 @@ const addClickRotateHandler = () => {
 
 const addClickCardHandler = () => {
     const cards = document.querySelector('.cards__container')
+    const links = document.querySelectorAll('.menu__item')
     cards.addEventListener('click', (e) => {
         if (e.target.classList.contains('card')) {
             const { id } = e.target
+            links.forEach((el) => {
+                el.classList.remove('active')
+                if (el.title === id) {
+                    el.classList.add('active')
+                }
+            })
             if (modeTrain) {
                 addTrainPage(id)
                 addClickTrainHandler()
@@ -333,15 +419,14 @@ const menuHidden = () => {
 }
 
 const addClickMenuHandler = () => {
-    const menu = document.querySelector('.menu')
+    const menu = document.querySelector('.menu');
     const links = document.querySelectorAll('.menu__item')
-
+  
     menu.addEventListener('click', (e) => {
         const container = document.querySelector('.cards__container')
         if (e.target.classList.contains('menu__item')) {
             e.preventDefault()
             const { title } = e.target
-
             links.forEach((link) => {
                 if (link.classList.contains('active')) {
                     link.classList.remove('active')
@@ -362,6 +447,7 @@ const addClickMenuHandler = () => {
                     addClickRotateHandler()
                 } else if (modePlay) {
                     addPlayPage(title)
+                    addClickStartGameHandler()
                 }
             }
         }
