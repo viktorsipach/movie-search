@@ -8,6 +8,9 @@ const bgPlay = 'linear-gradient(0deg, rgba(245, 175, 25, 1) 0%,  rgba(241, 49, 1
 const audioCorrect = 'https://raw.githubusercontent.com/rolling-scopes-school/tasks/master/tasks/rslang/english-for.kids.data/audio/correct.mp3'
 const audioError = 'https://raw.githubusercontent.com/rolling-scopes-school/tasks/master/tasks/rslang/english-for.kids.data/audio/error.mp3'
 
+const audioSuccess = 'https://raw.githubusercontent.com/rolling-scopes-school/tasks/master/tasks/rslang/english-for.kids.data/audio/success.mp3'
+const audioFailure = 'https://raw.githubusercontent.com/rolling-scopes-school/tasks/master/tasks/rslang/english-for.kids.data/audio/failure.mp3'
+
 const arrWords = [];
 
 let modeTrain = true;
@@ -16,10 +19,10 @@ let hiddenWord = null;
 let error = 0;
 
 const addDomElements = () => {
-    error = 0;
+
     const container = document.createElement('div');
     container.classList = 'cards__container';
-    container.innerHTML = `<div class="stars"></div>
+    container.innerHTML = `<div class="stars"><img src="../assets/img/star.svg" class="star hidden-star"></div>
             <div class="card" id="0">
                 <div class="card__img"></div>
                 <p class="card__word"></p>
@@ -103,7 +106,7 @@ const addClickToggleHandler = () => {
     const switcher = document.getElementById('switch')
     const text = document.querySelector('.toggle__text')
     const menu = document.querySelector('.menu')
-  
+
     let curId = null;
 
     toggle.addEventListener('click', () => {
@@ -114,7 +117,7 @@ const addClickToggleHandler = () => {
             }
         })
 
-       if (!switcher.checked) {
+        if (!switcher.checked) {
             switcher.checked = true
             modePlay = true
             modeTrain = false
@@ -218,8 +221,13 @@ const addPlayPage = (id) => {
     })
 }
 
-const play = (word) => {
+const playWord = (word) => {
     const audio = new Audio(`https://wooordhunt.ru/data/sound/word/us/mp3/${word}.mp3`);
+    audio.play()
+}
+
+const playAudio = (audioLink) => {
+    const audio = new Audio(audioLink);
     audio.play()
 }
 
@@ -228,7 +236,7 @@ const addClickTrainHandler = () => {
     cards.addEventListener('click', (e) => {
         if (e.target.classList.contains('card__img')) {
             const word = e.target.nextElementSibling.innerText
-            play(word)
+            playWord(word)
         }
     })
 }
@@ -249,10 +257,12 @@ const finishGame = () => {
         const container = document.querySelector('.cards__container')
         const emoji = document.createElement('div');
         emoji.classList = 'emoji'
-        emoji.innerHTML = `<p class='emoji__text'>You Win!</p><p>&#128588</p>`
+        emoji.innerHTML = `<p class='emoji__text'>You Win!</p><p>&#129321</p>`
         container.remove()
         document.querySelector('.wrapper').append(emoji)
+        playAudio(audioSuccess)
         setTimeout(() => {
+            error = 0;
             container.remove()
             emoji.remove()
             addDomElements()
@@ -267,10 +277,12 @@ const finishGame = () => {
         const container = document.querySelector('.cards__container')
         const emoji = document.createElement('div');
         emoji.classList = 'emoji'
-        emoji.innerHTML = `<p class='emoji__text'>Error ${error}!</p><p>&#128532</p>` 
+        emoji.innerHTML = `<p class='emoji__text'>Error ${error}!</p><p>&#128532</p>`
         container.remove()
         document.querySelector('.wrapper').append(emoji)
+        playAudio(audioFailure)
         setTimeout(() => {
+            error = 0;
             container.remove();
             emoji.remove();
             addDomElements();
@@ -280,37 +292,38 @@ const finishGame = () => {
             addClickMenuHandler();
             menuHidden();
         }, showEmoji);
-    }  
+    }
 }
 
 const getWord = () => {
     if (arrWords.length > 0) {
         hiddenWord = arrWords.pop()
-        play(hiddenWord)
+        playWord(hiddenWord)
     } else {
-       finishGame()
+        finishGame()
     }
 }
 
 const gameHandler = (clickedWord) => {
-    const starsContainer = document.querySelector('.stars');
+    const stars = document.querySelectorAll('.star')
+    const FIRST_ELEMENT = 0;
+   
     if (clickedWord === hiddenWord) {
-        const audio = new Audio(audioCorrect);
+        playAudio(audioCorrect);
         const stopAudio = 1000;
-        audio.play()
         setTimeout(getWord, stopAudio)
         const star = document.createElement('img');
         star.src = './assets/img/star-win.svg';
         star.classList = 'star';
-        starsContainer.append(star);
+        stars[FIRST_ELEMENT].before(star)
+       
     } else {
-        error++;
-        const audio = new Audio(audioError);
-        audio.play();
+        error += 1
+        playAudio(audioError);
         const star = document.createElement('img');
         star.src = './assets/img/star.svg';
         star.classList = 'star';
-        starsContainer.append(star);
+        stars[FIRST_ELEMENT].before(star)
     }
 }
 
@@ -342,7 +355,7 @@ const addClickStartGameHandler = () => {
             addClickPlayHandler()
             getWord()
         } else {
-            play(hiddenWord)
+            playWord(hiddenWord)
         }
 
     })
@@ -421,7 +434,7 @@ const menuHidden = () => {
 const addClickMenuHandler = () => {
     const menu = document.querySelector('.menu');
     const links = document.querySelectorAll('.menu__item')
-  
+
     menu.addEventListener('click', (e) => {
         const container = document.querySelector('.cards__container')
         if (e.target.classList.contains('menu__item')) {

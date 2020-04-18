@@ -29,7 +29,7 @@ body html {
     margin: 0 auto;
     flex-wrap: wrap;
     justify-content: center;
-    padding-top: 30px;
+    padding-top: 10px;
     padding-bottom: 30px;
 }
 
@@ -170,6 +170,7 @@ body html {
 
 .active__btn {
     width: 5%;
+    height: 50px;
     border-radius: 50%;
 }
 
@@ -178,7 +179,8 @@ body html {
 }
 
 .stars {
-    width: 85%;
+    width: 84%;
+    height: 40px;
     display: flex;
     overflow: hidden;
     flex-direction: row-reverse;
@@ -199,4 +201,8 @@ body html {
     margin-bottom: 15%;
     font-size: 2.2rem;
     color:red;
+}
+
+.hidden-star {
+    display: none;
 }
