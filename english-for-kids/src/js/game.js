@@ -1,4 +1,4 @@
-import cardsData from '../assets/data'
+import cardsData from './cardsData';
 import { bgTrain, bgPlay, audioCorrect, audioError, audioSuccess, audioFailure } from './constants';
 import { addDomElements, addTrainPage, addPlayPage } from './dom';
 import { playAudio, playWord } from './audioPlayer';
@@ -33,7 +33,7 @@ const addMainPage = () => {
         const element = el
         element.innerHTML = `${text}`
     })
-}
+};
 
 const getWordsForGame = () => {
     const wordsNodeList = document.querySelectorAll('.card__word');
@@ -108,7 +108,6 @@ const addClickStartGameHandler = () => {
         } else {
             playWord(hiddenWord)
         }
-
     })
 }
 
@@ -133,7 +132,7 @@ const addClickCardHandler = () => {
                 addClickStartGameHandler()
             }
         }
-    })
+    }, { once: true })
 }
 
 const menuHidden = () => {
@@ -237,32 +236,44 @@ const addClickToggleHandler = () => {
     })
 };
 
+const addMainPageActive = () => {
+    const FIRST_ELEMENT = 0;
+    const links = document.querySelectorAll('.menu__item');
+    links.forEach((link) => {
+        if (link.classList.contains('active')) {
+            link.classList.remove('active')
+        }
+    })
+    links[FIRST_ELEMENT].classList.add('active')
+}
+
 const finishGame = () => {
     const SHOW_EMOJI_DURATION = 2000;
     if (error === 0) {
         const container = document.querySelector('.cards__container')
         const emoji = document.createElement('div');
         emoji.classList = 'emoji'
-        emoji.innerHTML = `<p class='emoji__text'>You Win!</p><p>&#129321</p>`
+        emoji.innerHTML = `<p class='emoji__text'>You Win!</p><img src='./assets/img/success.jpg'></img>`
         container.remove()
         document.querySelector('.wrapper').append(emoji)
         playAudio(audioSuccess)
         setTimeout(() => {
             error = 0;
-            container.remove()
-            emoji.remove()
-            addDomElements()
-            addMainPage()
-            addClickToggleHandler()
-            addClickCardHandler()
-            addClickMenuHandler()
-            menuHidden()
+            container.remove();
+            emoji.remove();
+            addDomElements();
+            addMainPage();
+            addMainPageActive();
+            addClickToggleHandler();
+            addClickCardHandler();
+            addClickMenuHandler();
+            menuHidden();
         }, SHOW_EMOJI_DURATION);
     } else {
         const container = document.querySelector('.cards__container')
         const emoji = document.createElement('div');
         emoji.classList = 'emoji'
-        emoji.innerHTML = `<p class='emoji__text'>Error ${error}!</p><p>&#128532</p>`
+        emoji.innerHTML = `<p class='emoji__text'>Error ${error}!</p><img src='./assets/img/failure.jpg'></img>`
         container.remove()
         document.querySelector('.wrapper').append(emoji)
         playAudio(audioFailure)
@@ -272,6 +283,7 @@ const finishGame = () => {
             emoji.remove();
             addDomElements();
             addMainPage();
+            addMainPageActive();
             addClickToggleHandler();
             addClickCardHandler();
             addClickMenuHandler();

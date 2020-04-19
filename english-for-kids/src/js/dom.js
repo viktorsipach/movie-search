@@ -1,4 +1,4 @@
-import cardsData from '../assets/data';
+import cardsData from './cardsData'
 
 const addDomElements = () => {
     const container = document.createElement('div');
@@ -118,6 +118,8 @@ const addPlayPage = (id) => {
         element.style.height = '240px'
         element.style.background = 'none'
     })
-}
+};
+
+
 
 export { addDomElements, addTrainPage, addPlayPage };

@@ -294,104 +294,103 @@ const cardsData = [
         }
     ],
     [{
-            word: 'cry',
-            translation: 'плакать',
-            image: 'img/cry.jpg',
-            audioSrc: 'audio/cry.mp3'
+            word: 'apple',
+            translation: 'яблоко',
+            image: 'img/apple.jpg'
+
         },
         {
-            word: 'dance',
-            translation: 'танцевать',
-            image: 'img/dance.jpg',
-            audioSrc: 'audio/dance.mp3'
+            word: 'pear',
+            translation: 'груша',
+            image: 'img/pear.jpg'
         },
         {
-            word: 'dive',
-            translation: 'нырять',
-            image: 'img/dive.jpg',
+            word: 'orange',
+            translation: 'апельсин',
+            image: 'img/orange.jpg',
             audioSrc: 'audio/dive.mp3'
         },
         {
-            word: 'draw',
-            translation: 'рисовать',
-            image: 'img/draw.jpg',
-            audioSrc: 'audio/draw.mp3'
+            word: 'kiwi',
+            translation: 'киви',
+            image: 'img/kiwi.jpg'
+
         },
         {
-            word: 'fish',
-            translation: 'ловить рыбу',
-            image: 'img/fish.jpg',
-            audioSrc: 'audio/fish.mp3'
+            word: 'lemon',
+            translation: 'лемон',
+            image: 'img/lemon.jpg'
+
         },
         {
-            word: 'fly',
-            translation: 'летать',
-            image: 'img/fly.jpg',
-            audioSrc: 'audio/fly.mp3'
+            word: 'peach',
+            translation: 'персик',
+            image: 'img/peach.jpg'
+
         },
         {
-            word: 'hug',
-            translation: 'обнимать',
-            image: 'img/hug.jpg',
-            audioSrc: 'audio/hug.mp3'
+            word: 'pineapple',
+            translation: 'ананас',
+            image: 'img/pineapple.jpg'
+
         },
         {
-            word: 'jump',
-            translation: 'прыгать',
-            image: 'img/jump.jpg',
-            audioSrc: 'audio/jump.mp3'
+            word: 'strawberry',
+            translation: 'клубника',
+            image: 'img/strawberry.jpg'
+
         }
     ],
     [{
-            word: 'cry',
-            translation: 'плакать',
-            image: 'img/cry.jpg',
-            audioSrc: 'audio/cry.mp3'
+            word: 'brother',
+            translation: 'брат',
+            image: 'img/brother.jpg'
+
         },
         {
-            word: 'dance',
-            translation: 'танцевать',
-            image: 'img/dance.jpg',
-            audioSrc: 'audio/dance.mp3'
+            word: 'sister',
+            translation: 'сестра',
+            image: 'img/sister.jpeg'
+
         },
         {
-            word: 'dive',
-            translation: 'нырять',
-            image: 'img/dive.jpg',
-            audioSrc: 'audio/dive.mp3'
+            word: 'grandmother',
+            translation: 'бабушка',
+            image: 'img/grandmother.jpg'
+
         },
         {
-            word: 'draw',
-            translation: 'рисовать',
-            image: 'img/draw.jpg',
-            audioSrc: 'audio/draw.mp3'
+            word: 'grandfather',
+            translation: 'дедушка',
+            image: 'img/grandfather.jpg'
+
         },
         {
-            word: 'fish',
-            translation: 'ловить рыбу',
-            image: 'img/fish.jpg',
-            audioSrc: 'audio/fish.mp3'
+            word: 'uncle',
+            translation: 'дядя',
+            image: 'img/uncle.jpg'
+
         },
         {
-            word: 'fly',
-            translation: 'летать',
-            image: 'img/fly.jpg',
-            audioSrc: 'audio/fly.mp3'
+            word: 'aunt',
+            translation: 'тётя',
+            image: 'img/aunt.jpg'
+
         },
         {
-            word: 'hug',
-            translation: 'обнимать',
-            image: 'img/hug.jpg',
-            audioSrc: 'audio/hug.mp3'
+            word: 'dad',
+            translation: 'папа',
+            image: 'img/dad.jpg',
+
         },
         {
-            word: 'jump',
-            translation: 'прыгать',
-            image: 'img/jump.jpg',
-            audioSrc: 'audio/jump.mp3'
+            word: 'mom',
+            translation: 'мама',
+            image: 'img/mom.jpg'
+
         }
     ],
-    ['Action (set A)', 'Action (set B)', 'Animal (set A)', 'Animal (set B)', 'Clothes', 'Emotions', 'Action (set A)', 'Action (set B)']
+    ['Action (set A)', 'Action (set B)', 'Animal (set A)', 'Animal (set B)', 'Clothes', 'Emotions', 'Fruit', 'Family']
 ]
 
 
