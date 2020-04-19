@@ -2,6 +2,7 @@
 
 Link to the task - https://github.com/rolling-scopes-school/tasks/blob/master/tasks/rslang/english-for-kids.md
 
+Link to the deploy - https://viktorsipach-english-for-kids.netlify.app/
 
 QUICK START
 
