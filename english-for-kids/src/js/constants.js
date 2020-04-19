@@ -1,5 +1,5 @@
 const bgTrain = 'linear-gradient(0deg, rgba(9,210,90,1) 0%, rgba(9,233,236,1) 84%)'
-const bgPlay = 'linear-gradient(0deg, rgba(245, 175, 25, 1) 0%,  rgba(241, 49, 17, 1) 50%)'
+const bgPlay = 'linear-gradient(to bottom, #fcb045, #fd1d1d,  #833ab4)'
 const audioCorrect = 'https://raw.githubusercontent.com/rolling-scopes-school/tasks/master/tasks/rslang/english-for.kids.data/audio/correct.mp3'
 const audioError = 'https://raw.githubusercontent.com/rolling-scopes-school/tasks/master/tasks/rslang/english-for.kids.data/audio/error.mp3'
 

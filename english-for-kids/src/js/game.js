@@ -3,6 +3,7 @@ import { bgTrain, bgPlay, audioCorrect, audioError, audioSuccess, audioFailure }
 import { addDomElements, addTrainPage, addPlayPage } from './dom';
 import { playAudio, playWord } from './audioPlayer';
 import { addClickTrainHandler, addClickRotateHandler } from './train';
+import { updateStatistics } from './statistics';
 
 const arrWords = [];
 let modeTrain = true;
@@ -68,6 +69,7 @@ const gameHandler = (clickedWord) => {
         star.src = './assets/img/star-win.svg';
         star.classList = 'star';
         stars[FIRST_ELEMENT].before(star)
+        updateStatistics(clickedWord, 'correct')
     } else {
         error += 1
         playAudio(audioError);
@@ -75,6 +77,7 @@ const gameHandler = (clickedWord) => {
         star.src = './assets/img/star.svg';
         star.classList = 'star';
         stars[FIRST_ELEMENT].before(star)
+        updateStatistics(hiddenWord, 'error')
     }
 }
 
@@ -142,11 +145,23 @@ const menuHidden = () => {
     })
 }
 
+const addMainPageActive = () => {
+    const FIRST_ELEMENT = 0;
+    const links = document.querySelectorAll('.menu__item');
+    links.forEach((link) => {
+        if (link.classList.contains('active')) {
+            link.classList.remove('active')
+        }
+    })
+    links[FIRST_ELEMENT].classList.add('active')
+}
+
 const addClickMenuHandler = () => {
     const menu = document.querySelector('.menu');
     const links = document.querySelectorAll('.menu__item')
-
+  
     menu.addEventListener('click', (e) => {
+        const statistics = document.querySelector('.statistics');
         const container = document.querySelector('.cards__container')
         if (e.target.classList.contains('menu__item')) {
             e.preventDefault()
@@ -158,18 +173,24 @@ const addClickMenuHandler = () => {
             })
             e.target.classList.add('active')
             if (title === 'main') {
+                statistics.classList.add('hidden')
                 container.remove()
                 addDomElements()
                 addMainPage()
                 addClickCardHandler()
+            } else if (title === 'statistics'){
+                container.classList.add('hidden')
+                statistics.classList.remove('hidden')
             } else {
                 container.remove()
                 addDomElements()
                 if (modeTrain) {
+                    statistics.classList.add('hidden')
                     addTrainPage(title)
                     addClickTrainHandler()
                     addClickRotateHandler()
                 } else if (modePlay) {
+                    statistics.classList.add('hidden')
                     addPlayPage(title)
                     addClickStartGameHandler()
                 }
@@ -188,6 +209,7 @@ const addClickToggleHandler = () => {
     let curId = null;
 
     toggle.addEventListener('click', () => {
+        const statistics = document.querySelector('.statistics');
         const container = document.querySelector('.cards__container')
         links.forEach((el) => {
             if (el.classList.contains('active')) {
@@ -202,10 +224,12 @@ const addClickToggleHandler = () => {
             text.classList.add('text__right')
             text.innerHTML = 'Play'
             menu.style.background = `${bgPlay}`
-            if (curId === 'main') {
+            if (curId === 'main' || curId === 'statistics') {
+                statistics.classList.add('hidden')
                 container.remove()
                 addDomElements()
                 addMainPage()
+                addMainPageActive()
                 addClickCardHandler()
             } else {
                 container.remove()
@@ -220,10 +244,12 @@ const addClickToggleHandler = () => {
             text.classList.remove('text__right')
             text.innerHTML = 'Train'
             menu.style.background = `${bgTrain}`
-            if (curId === 'main') {
+            if (curId === 'main' || curId === 'statistics') {
+                statistics.classList.add('hidden')
                 container.remove()
                 addDomElements()
                 addMainPage()
+                addMainPageActive()
                 addClickCardHandler()
             } else {
                 container.remove()
@@ -236,16 +262,6 @@ const addClickToggleHandler = () => {
     })
 };
 
-const addMainPageActive = () => {
-    const FIRST_ELEMENT = 0;
-    const links = document.querySelectorAll('.menu__item');
-    links.forEach((link) => {
-        if (link.classList.contains('active')) {
-            link.classList.remove('active')
-        }
-    })
-    links[FIRST_ELEMENT].classList.add('active')
-}
 
 const finishGame = () => {
     const SHOW_EMOJI_DURATION = 2000;

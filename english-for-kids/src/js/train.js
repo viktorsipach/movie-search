@@ -1,4 +1,5 @@
 import { playWord } from './audioPlayer';
+import { updateStatistics } from './statistics';
 
 const addClickTrainHandler = () => {
     const cards = document.querySelector('.cards__container')
@@ -6,6 +7,7 @@ const addClickTrainHandler = () => {
         if (e.target.classList.contains('card__img')) {
             const word = e.target.nextElementSibling.innerText
             playWord(word)
+            updateStatistics(word,'train')
         }
     })
 };
