@@ -134,6 +134,22 @@ const addClickCardHandler = () => {
                 addPlayPage(id)
                 addClickStartGameHandler()
             }
+        } else if (e.target.classList.contains('card__img') || e.target.classList.contains('card__word')) {
+            const { id } = e.target.offsetParent
+            links.forEach((el) => {
+                el.classList.remove('active')
+                if (el.title === id) {
+                    el.classList.add('active')
+                }
+            })
+            if (modeTrain) {
+                addTrainPage(id)
+                addClickTrainHandler()
+                addClickRotateHandler()
+            } else if (modePlay) {
+                addPlayPage(id)
+                addClickStartGameHandler()
+            }
         }
     }, { once: true })
 }
@@ -159,7 +175,7 @@ const addMainPageActive = () => {
 const addClickMenuHandler = () => {
     const menu = document.querySelector('.menu');
     const links = document.querySelectorAll('.menu__item')
-  
+
     menu.addEventListener('click', (e) => {
         const statistics = document.querySelector('.statistics');
         const container = document.querySelector('.cards__container')
@@ -178,7 +194,7 @@ const addClickMenuHandler = () => {
                 addDomElements()
                 addMainPage()
                 addClickCardHandler()
-            } else if (title === 'statistics'){
+            } else if (title === 'statistics') {
                 container.classList.add('hidden')
                 statistics.classList.remove('hidden')
             } else {
