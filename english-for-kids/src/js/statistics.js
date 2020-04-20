@@ -21,11 +21,11 @@ const addDomStatistics = () => {
             </div>
         </div>
     </div>`
-    
+
     document.querySelector('.wrapper').append(statistics)
 };
 
-const addRow = (id,category,word,translate) => {
+const addRow = (id, category, word, translate) => {
     const statistics = document.querySelector('.statistics');
     const row = document.createElement('div');
     row.classList = 'row';
@@ -43,16 +43,16 @@ const addRow = (id,category,word,translate) => {
 };
 
 const addStatistics = () => {
-    for (let index = 0; index < cardsData.length - 1; index +=1) {
-        const element = cardsData[index] 
-        const category = cardsData[cardsData.length - 1][index] 
+    for (let index = 0; index < cardsData.length - 1; index += 1) {
+        const element = cardsData[index]
+        const category = cardsData[cardsData.length - 1][index]
         element.forEach((el) => {
             const id = el.word
             const { word } = el
             const { translation } = el
-            addRow(id,category,word,translation)
-        });  
-       
+            addRow(id, category, word, translation)
+        });
+
     }
 };
 
@@ -70,7 +70,7 @@ const checkLocalStorage = () => {
         const statistics = document.querySelector('.statistics');
         statistics.innerHTML = localStorage.getItem('statistics');
     }
-} 
+}
 
 const removeHiddenClass = () => {
     const statistics = document.querySelector('.statistics');
@@ -96,7 +96,7 @@ const addClickResetHandler = () => {
         }
     })
 };
-const countPrecent = () => {
+const countPercent = () => {
     const items = document.querySelectorAll('.game__items')
     const FIRST_CHILD = 0;
     const SECOND_CHILD = 1;
@@ -104,63 +104,67 @@ const countPrecent = () => {
     items.forEach((el) => {
         const correct = el.children[FIRST_CHILD].innerHTML;
         const error = el.children[SECOND_CHILD].innerHTML;
-        const precent = el.children[THIRD_CHILD]
+        const percent = el.children[THIRD_CHILD]
         const numberCorrect = +correct;
         const numberError = +error;
         if (numberError > 0) {
-            const curPrecent = (numberError/numberCorrect) * 100;
-            precent.innerHTML = `${curPrecent.toFixed()}%`
+            const curPercent = (numberError / numberCorrect) * 100;
+            percent.innerHTML = `${curPercent.toFixed()}%`
         }
     })
 }
 
-const updateStatistics = (id,config) => {
+const updateStatistics = (id, config) => {
+    const FIRST_CHILD = 0;
+    const SECOND_CHILD = 1;
+    const FOURTH_CHILD = 3;
+    const FIFTH_CHILD = 4;
     const rows = document.querySelectorAll('.row')
     let parentNumber = null;
     let childNumber = null;
     if (config === 'train') {
-        childNumber = 3;
+        childNumber = FOURTH_CHILD;
     } else if (config === 'correct') {
-        parentNumber = 4;
-        childNumber = 0;
+        parentNumber = FIFTH_CHILD;
+        childNumber = FIRST_CHILD;
     } else if (config === 'error') {
-        parentNumber = 4;
-        childNumber = 1;
+        parentNumber = FIFTH_CHILD;
+        childNumber = SECOND_CHILD;
     }
     rows.forEach((el) => {
         if (el.id === id && config === 'train') {
             const child = el.children[childNumber];
             const curData = child.innerHTML;
             let number = +curData;
-            number +=1;
+            number += 1;
             child.innerHTML = `${number}`;
-        } else if (el.id === id && config === 'correct'){
+        } else if (el.id === id && config === 'correct') {
             const parent = el.children[parentNumber]
             const child = parent.children[childNumber];
             const curData = child.innerHTML;
             let number = +curData;
-            number +=1;
+            number += 1;
             child.innerHTML = `${number}`;
-            countPrecent()
+            countPercent()
         } else if (el.id === id && config === 'error') {
             const parent = el.children[parentNumber]
             const child = parent.children[childNumber];
             const curData = child.innerHTML;
             let number = +curData;
-            number +=1;
+            number += 1;
             child.innerHTML = `${number}`;
-            countPrecent()
+            countPercent()
         }
     })
 };
 
 
 
-export { 
-addDomStatistics, 
-addStatistics, 
-checkLocalStorage, 
-saveStatistics, 
-addClickResetHandler,
-updateStatistics
+export {
+    addDomStatistics,
+    addStatistics,
+    checkLocalStorage,
+    saveStatistics,
+    addClickResetHandler,
+    updateStatistics
 };

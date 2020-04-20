@@ -23,12 +23,12 @@ const addMainPage = () => {
         } else {
             card.style.background = `${bgPlay}`
         }
-    })
+    });
     images.forEach((el, idx) => {
-        const img = cardsData[idx][idx].image
+        const { image } = cardsData[idx][idx]
         const element = el
-        element.style.backgroundImage = `url(./assets/${img})`
-    })
+        element.style.backgroundImage = `url(./assets/${image})`
+    });
     words.forEach((el, idx) => {
         const text = cardsData[cardsData.length - 1][idx]
         const element = el
@@ -59,6 +59,8 @@ const getWord = () => {
 const gameHandler = (clickedWord) => {
     const FIRST_ELEMENT = 0;
     const AUDIO_DURATION = 1000;
+    const STAR_WIN_SRC = './assets/img/star-win.svg';
+    const STAR_SRC = './assets/img/star.svg'
 
     const stars = document.querySelectorAll('.star');
 
@@ -66,7 +68,7 @@ const gameHandler = (clickedWord) => {
         playAudio(audioCorrect);
         setTimeout(getWord, AUDIO_DURATION)
         const star = document.createElement('img');
-        star.src = './assets/img/star-win.svg';
+        star.src = STAR_WIN_SRC;
         star.classList = 'star';
         stars[FIRST_ELEMENT].before(star)
         updateStatistics(clickedWord, 'correct')
@@ -74,7 +76,7 @@ const gameHandler = (clickedWord) => {
         error += 1
         playAudio(audioError);
         const star = document.createElement('img');
-        star.src = './assets/img/star.svg';
+        star.src = STAR_SRC;
         star.classList = 'star';
         stars[FIRST_ELEMENT].before(star)
         updateStatistics(hiddenWord, 'error')
@@ -96,12 +98,13 @@ const addClickPlayHandler = () => {
 
 const addClickStartGameHandler = () => {
     const btn = document.querySelector('.btn__start')
+    const REPEAT_SRC = './assets/img/repeat.svg'
     btn.addEventListener('click', (e) => {
         const textBtn = e.target.innerHTML
         if (textBtn === 'Start game') {
             const img = document.createElement('img')
             img.classList = 'repeat'
-            img.src = './assets/img/repeat.svg'
+            img.src = REPEAT_SRC
             btn.innerHTML = ''
             btn.append(img)
             btn.classList.add('active__btn')
