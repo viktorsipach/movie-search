@@ -1,0 +1,17 @@
+
+body html {
+    font-size: 10px;
+}
+
+.wrapper {
+    width: 90%;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    @media (max-width: 980px) {
+        width: 100%;
+    }
+}
+
