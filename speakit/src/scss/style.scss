@@ -11,7 +11,6 @@
         flex-direction: column;
         align-items: center;
         position: relative;
-        transition: all 200ms ease-in-out;
     }
     
     .start-page {
@@ -26,7 +25,6 @@
         color: #ffffff;
         background-image: url('../assets/img/bg.jpg');
         background-size: cover;
-        transition: all 200ms ease-in-out;
         &__header {
             color: rgb(14, 156, 144);
             font-size: 2.2rem;
@@ -54,10 +52,12 @@
     }
     
     .translate {
+        height: 25px;
         margin-bottom: 1%;
         font-size: 1.5rem;
         color: rgba(0, 0, 0, 0.7);
         font-family: Helvetica, sans-serif;
+        transition: all 200ms ease-in-out;
     }
     
     .hidden {
@@ -99,7 +99,7 @@
     }
     
     .wrapper__toggle {
-        width: 17%;
+        width: 175px;
         display: flex;
         justify-content: space-around;
     }
@@ -117,6 +117,7 @@
         padding: 2px;
         user-select: none;
         cursor: pointer;
+        transition: all 200ms ease-in-out;
         &:hover {
             border: 3px double rgb(14, 139, 156);
         }
@@ -149,6 +150,10 @@
         font-size: 1.2rem;
         color: rgba(0, 0, 0, 0.7);
         cursor: pointer;
+        transition: all 200ms ease-in-out;
+        &__audio {
+            display: none;
+        }
         &__img {
             display: none;
         }
@@ -159,7 +164,7 @@
             box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.4);
         }
     }
-    
+
     .wrapper-text {
         width: 80%;
         text-align: center;
@@ -170,4 +175,9 @@
         width: 30px;
         height: 30px;
         margin-left: 5px;
+    }
+
+    .active-card {
+        background: rgba(14, 156, 144,0.3);
+        border: 1px solid rgb(14, 156, 144);
     }
