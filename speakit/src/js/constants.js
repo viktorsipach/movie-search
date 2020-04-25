@@ -6,7 +6,7 @@ export const LINKS = {
 
 
 export const properties = {
-    level: 1
+    level: 0
 }
 
 export const CARDS_ON_PAGE = 10;
