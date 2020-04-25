@@ -1,7 +1,8 @@
 export const LINKS = {
     LINK__IMG: 'https://raw.githubusercontent.com/viktorsipach/rslang/rslang-data/data/',
     LINK__AUDIO: 'https://raw.githubusercontent.com/viktorsipach/rslang/rslang-data/data/',
-    LINK__URL_DEFAULT: '../assets/img/english.jpg'
+    LINK__URL_DEFAULT: '../assets/img/english.jpg',
+    STAR_WIN_SRC: './assets/img/star-win.svg'
 }
 
 

@@ -30,6 +30,20 @@ const addCard = (word, transcription, img, audio) => {
     wrapper.append(card)
 };
 
+const addResults = (word, transcription, img, audio) => {
+    const results = document.querySelector('.results__item')
+    const result = document.createElement('div')
+    result.classList = 'result'
+    result.innerHTML = ` <img src="./assets/img/icon-audio.png" class="icon" alt="icon">
+    <div class='result__audio'>${LINKS.LINK__AUDIO}${audio}</div>
+    <div class= 'result__img'>${LINKS.LINK__IMG}${img}</div>
+    <p class="result__word">${word}</p>
+    <p class="result__transcription">${transcription}</p>
+    <p class="result__translate"></p>
+    </div>`
+    results.append(result)
+}
+
 const removeCards = () => {
     const cards = document.querySelectorAll('.card');
     cards.forEach((el) => {
@@ -39,6 +53,7 @@ const removeCards = () => {
 
 const getDataCards = (json) => {
     const arrWords = json;
+    let translation = null;
     arrWords.sort(() => { return Math.random() - 0.5});
     for (let index = CARDS_ON_PAGE; index < arrWords.length; index++) {
         const el = arrWords[index];
@@ -47,6 +62,7 @@ const getDataCards = (json) => {
         const { image } = el
         const { audio } = el
         addCard(word,transcription,image,audio)
+        addResults(word,transcription,image,audio)
     }
 };
 
@@ -121,8 +137,28 @@ const changeLevel = () => {
             removeActiveToggler()
             removeCards()
             restart()
+            removeSatrs()
             getWords(properties.level, properties.level).then(json => getDataCards(json))
             e.target.classList.add('active-toggle')
+        }
+    })
+}
+const addStar = () => {
+    const stars = document.querySelectorAll('.star');
+    const cards = document.querySelectorAll('.active-card');
+    if (stars.length < cards.length + 1) {
+        const star = document.createElement('img');
+        star.src = LINKS.STAR_WIN_SRC;
+        star.classList = 'star';
+        stars[CHILDREN.FIRST].before(star)
+    }
+}
+
+const removeSatrs = () => {
+    const stars = document.querySelectorAll('.star');
+    stars.forEach((el, index) => {
+        if (el.classList.contains('star') && !el.classList.contains('hidden')) {
+            stars[index].remove()
         }
     })
 }
@@ -130,13 +166,14 @@ const changeLevel = () => {
 const startSpeak = () => {
     const cards = document.querySelectorAll('.card')
     const btn = document.querySelector('.btn-speak')
-    const resultSpeaking = document.querySelector('.result')
+    const resultSpeaking = document.querySelector('.result-speak')
+    const stars = document.querySelectorAll('.star');
     if(window.webkitSpeechRecognition) {
         const recognition = new webkitSpeechRecognition();
         recognition.lang = 'en-EN';
         recognition.interimResults = true;
         recognition.continuous = true;
-        recognition.maxAlternatives = 1;
+        recognition.maxAlternatives = 10;
         if (btn.classList.contains('btn-active')) {  
             recognition.start();
             recognition.onresult = (event) => {
@@ -149,6 +186,7 @@ const startSpeak = () => {
                     const card = document.getElementById(`${word}`)
                     card.classList.add('active-card')
                     showImage(image)
+                    addStar()
                 }
             })
             }
@@ -159,7 +197,7 @@ const startSpeak = () => {
 const addStartSpeakBtnHandler = () => {
     const container = document.querySelector('.wrapper__cards')
     const btn = document.querySelector('.btn-speak');
-    const resultSpeaking = document.querySelector('.result')
+    const resultSpeaking = document.querySelector('.result-speak')
     const translate = document.querySelector('.translate')
     btn.addEventListener('click', () => {
     if (!btn.classList.contains('btn-active')) {
@@ -172,12 +210,14 @@ const addStartSpeakBtnHandler = () => {
         startSpeak()
         showImage(LINKS.LINK__URL_DEFAULT) 
     } else {
+        container.addEventListener('click', listenerCard)
         btn.classList.remove('btn-active')
         resultSpeaking.classList.add('hidden')
         btn.innerText = 'Please speak'
         const recognition = new webkitSpeechRecognition();
         recognition.start()
         recognition.stop()
+        removeSatrs()
     }
     })  
 }
@@ -185,10 +225,11 @@ const addStartSpeakBtnHandler = () => {
 const restart = () => {
     const translate = document.querySelector('.translate')
     const btnSpeak = document.querySelector('.btn-speak');
-    const resultSpeaking = document.querySelector('.result')
+    const resultSpeaking = document.querySelector('.result-speak')
     showImage(LINKS.LINK__URL_DEFAULT)
     removeActiveClassOfCard()
     addClickCardHandler()
+    removeSatrs()
     btnSpeak.classList.remove('btn-active')
     resultSpeaking.classList.add('hidden')
     btnSpeak.innerText = 'Please speak'
@@ -203,12 +244,22 @@ const addClickRestartBtnHandler = () => {
     btnRestart.addEventListener('click', restart)
 }
 
+const addClickResultsBtnHandler = () => {
+    const btnResults = document.querySelector('.btn-results');
+    const main = document.querySelector('.main');
+    const results = document.querySelector('.results');
+    btnResults.addEventListener('click', () => {
+        main.classList.add('hidden')
+        results.classList.remove('hidden')
+    })
+}
+
 window.onload = () => {
     getWords(properties.level, properties.level).then(json => getDataCards(json))
     addStartPageHandler()
     addClickCardHandler()
     addStartSpeakBtnHandler()
     addClickRestartBtnHandler()
+    addClickResultsBtnHandler()
     changeLevel()
-   
 };
