@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>movie search</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
+  <link rel="shortcut icon" href="assets/img/favicon.ico"> 
+  <link href="./css/reset.css">
+  <link href="style.css" rel="stylesheet"></head>
+
+<body>
+  <header class="header">
+    <h1>MovieSearch</h1>
+  </header>
+  <main class="container">
+    <form class="search">
+      <input class="search-input" type="text" placeholder="Search movie" autofocus>
+      <button class="search-btn" type="submit">Search</button>
+      <span data-name="Clear" class="search-clear tooltip"></span>
+      <span data-name="Keyboard" class="search-tia tooltip"></span>
+    </form>
+    <p class="info"></p>
+    <div class="swiper-outer">
+      <div class="swiper-container">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide card"><div class="card-body"></div></div>
+          <div class="swiper-slide card"><div class="card-body"></div></div>
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+      <div class="swiper-btn swiper-btn-next"></div>
+      <div class="swiper-btn swiper-btn-prev"></div>
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="footer-container">
+      <a href="https://rs.school/" class="rss">
+        RS School 2020q1
+      </a>      
+      <a href="https://github.com/viktorsipach" class="github">
+        viktorsipach
+      </a> 
+    </div>
+  </footer>
+<script type="text/javascript" src="./js/index.js"></script></body>
+</html>
