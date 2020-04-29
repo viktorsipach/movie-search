@@ -1,22 +1,22 @@
 import Swiper from 'swiper';
 
 export const mySwiper = new Swiper('.swiper-container', { 
-      // Optional parameters
       direction: 'horizontal',
       loop: true,
-  
-      // If we need pagination
+      spaceBetween: 80,
+      slidesPerView: 'auto',
+      loopedSlides: 10,
+      
       pagination: {
         el: '.swiper-pagination',
+        clickable: true,
       },
   
-      // Navigation arrows
       navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
+        nextEl: '#js-prev1',
+        prevEl: '#js-next1',
       },
      
-      // And if we need scrollbar
       scrollbar: {
         el: '.swiper-scrollbar',
  },});
