@@ -11,7 +11,6 @@ export const mySwiper = new Swiper('.swiper-container', {
         el: '.swiper-pagination',
         clickable: true,
         dynamicBullets: true,
-        dynamicMainBullets: 10,
       },
   
       navigation: {
