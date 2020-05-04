@@ -10,6 +10,8 @@ export const mySwiper = new Swiper('.swiper-container', {
       pagination: {
         el: '.swiper-pagination',
         clickable: true,
+        dynamicBullets: true,
+        dynamicMainBullets: 10,
       },
   
       navigation: {
@@ -20,3 +22,13 @@ export const mySwiper = new Swiper('.swiper-container', {
       scrollbar: {
         el: '.swiper-scrollbar',
  },});
+
+ export const showSwiper = () => {
+   const swiper = document.querySelector('.swiper-outer')
+   swiper.classList.remove('hidden')
+ } 
+
+ export const hideSwiper = () => {
+   const swiper = document.querySelector('.swiper-outer')
+   swiper.classList.add('hidden')
+ } 

@@ -49,6 +49,7 @@
     },
     "dependencies": {
         "core-js": "^2.5.7",
+        "spin.js": "^4.1.0",
         "swiper": "^5.3.8"
     }
 }
