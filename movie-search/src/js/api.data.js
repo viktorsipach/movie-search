@@ -1,5 +1,5 @@
-import { showSwiper, hideSwiper } from './swiper';
-import { showSpinner, hideSpinner  } from './spinner';
+
+import {  hideSpinner  } from './spinner';
 
 const errorHandler = (error) => {
     const input = document.querySelector('.search-input')
@@ -29,8 +29,9 @@ export const getReiting = async (imdbId) => {
             return data.imdbRating;
         }
     } catch (error) {
-        console.log(`Error: ${data.Error}`)
+        errorHandler(data.Error)
     } 
+    return data.imdbRating;
 };
 
 export const getMoviesData = async(name, page = 1) => {
@@ -43,16 +44,17 @@ export const getMoviesData = async(name, page = 1) => {
    
     try {
         if (response.ok) {
-            data.Search.forEach(
-                async (item) => (item.reiting = await getReiting(item.imdbID))
+            data.Search.forEach( async (item) => {
+                const movie = item;
+                (movie.reiting =  await getReiting(movie.imdbID))}
             );
-            const reiting = await getReiting(data.Search[0]);  
-            return data;   
+            await getReiting(data.Search);   
+            return data;  
         }
     } catch (error) {
         hideSpinner();
         errorHandler(data.Error)
-        console.clear();
+        return null; 
     }
-   
+    return null;   
 };

@@ -1,9 +1,15 @@
-import { mySwiper, showSwiper, hideSwiper } from './swiper';
+import { showSwiper, hideSwiper } from './swiper';
 import { showSpinner, hideSpinner  } from './spinner';
 import { getMoviesData } from './api.data'
-import { POSTER_DEFAULT_URL } from './constants'
+import { properties,  
+    DEFAULT_NUMBER_SLIDES, 
+    DEFAULT_NUMBER_PREV_LAST_SLIDE, 
+    DEFAULT_NUMBER_PAGE, 
+    POSTER_DEFAULT_URL,
+    DEFAULT_MOVIE
+} from './constants'
 
-export const createCard = ({ movie }, reiting) => {
+const createCard = ({ movie }, reiting) => {
     const { swiper } = document.querySelector('.swiper-container')
     if (movie.Poster === 'N/A') {
         movie.Poster = POSTER_DEFAULT_URL;
@@ -20,7 +26,8 @@ export const createCard = ({ movie }, reiting) => {
 export const createCards = (data) => {
     if (data) {
         const arrMovies = data.Search;
-        arrMovies.forEach((movie) => {
+        arrMovies.forEach((item) => {
+            const movie = item;
             let reiting  = null;
     
             if (movie.reiting === undefined || movie.reiting === 'N/A') {
@@ -30,9 +37,14 @@ export const createCards = (data) => {
             }
             createCard({ movie }, reiting)
             showSwiper()
-            hideSpinner()
+            hideSpinner() 
         })
     }
+}
+
+const resetProperties = () => {
+    properties.nextPage = DEFAULT_NUMBER_PAGE;
+    properties.prevLastSlide = DEFAULT_NUMBER_PREV_LAST_SLIDE;
 }
 
 export const searchMovie = (e) => {
@@ -42,6 +54,7 @@ export const searchMovie = (e) => {
 
     info.innerText = '';
     e.preventDefault();
+    resetProperties();
     showSpinner();
     hideSwiper();
     swiper.removeAllSlides()
@@ -59,4 +72,24 @@ export const addClickClearHandler = () => {
     clear.addEventListener('click', () => {
         input.value = '';
     })
+}
+
+export const addMoreSlides = () => {
+    const { swiper } = document.querySelector('.swiper-container')
+    const input = document.querySelector('.search-input')
+    swiper.on('slideChange', () => {
+        const { value } = input;
+        if (swiper.realIndex === properties.prevLastSlide && value !== '') {
+            const { nextPage } = properties;
+            getMoviesData(value,nextPage).then(data => createCards(data))
+            properties.nextPage += 1;
+            properties.prevLastSlide += DEFAULT_NUMBER_SLIDES;
+        } else if (swiper.realIndex === properties.prevLastSlide && value === '') {
+            const { nextPage } = properties;
+            getMoviesData(DEFAULT_MOVIE, nextPage).then(data => createCards(data))
+            properties.nextPage += 1;
+            properties.prevLastSlide += DEFAULT_NUMBER_SLIDES;
+        }
+    });
+    
 }

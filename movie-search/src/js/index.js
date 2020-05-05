@@ -1,13 +1,15 @@
 import '../css/reset.css';
 import '../scss/style.scss';
-import { mySwiper, showSwiper, hideSwiper } from './swiper';
-import { mySpinner, showSpinner, hideSpinner  } from './spinner';
+import { DEFAULT_MOVIE } from './constants';
+import { showSpinner } from './spinner';
 import { getMoviesData } from './api.data'
-import { createCards, addClickSearchHandler, addClickClearHandler } from './app'
+import { createCards, addClickSearchHandler, addClickClearHandler, addMoreSlides } from './app'
+
 
 window.onload = () => {
     addClickSearchHandler();
     addClickClearHandler();
-    getMoviesData('dream').then(data => createCards(data));
+    addMoreSlides();
+    getMoviesData(DEFAULT_MOVIE).then(data => createCards(data));
     showSpinner();
 }

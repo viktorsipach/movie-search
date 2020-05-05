@@ -11,11 +11,17 @@ export const mySwiper = new Swiper('.swiper-container', {
         el: '.swiper-pagination',
         clickable: true,
         dynamicBullets: true,
+        dynamicMainBullets: 10,
       },
   
       navigation: {
         nextEl: '#js-prev1',
         prevEl: '#js-next1',
+      },
+
+      keyboard: {
+        enabled: true,
+        onlyInViewport: false,
       },
      
       scrollbar: {
@@ -31,3 +37,4 @@ export const mySwiper = new Swiper('.swiper-container', {
    const swiper = document.querySelector('.swiper-outer')
    swiper.classList.add('hidden')
  } 
+ 
