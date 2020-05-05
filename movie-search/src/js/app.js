@@ -12,6 +12,7 @@ import { properties,
 const createCard = ({ movie }, reiting) => {
     const { swiper } = document.querySelector('.swiper-container')
     if (movie.Poster === 'N/A') {
+        /* eslint-disable no-param-reassign */
         movie.Poster = POSTER_DEFAULT_URL;
     }
     const card = `<div class="swiper-slide card">
@@ -42,6 +43,17 @@ export const createCards = (data) => {
     }
 }
 
+const hideKeyboard = () => {
+    const keyboard = document.querySelector('.keyboard')
+    keyboard.classList.toggle('hide-keyboard');
+}
+
+export const addClickKeyboardHandler = () => {
+    const icon = document.querySelector('.search-tia')
+    icon.addEventListener('click', hideKeyboard)
+}
+
+
 const resetProperties = () => {
     properties.nextPage = DEFAULT_NUMBER_PAGE;
     properties.prevLastSlide = DEFAULT_NUMBER_PREV_LAST_SLIDE;
@@ -51,7 +63,11 @@ export const searchMovie = (e) => {
     const { swiper } = document.querySelector('.swiper-container')   
     const { value } = document.querySelector('.search-input')
     const info = document.querySelector('.info')
+    const keyboard = document.querySelector('.keyboard')
 
+    if (!keyboard.classList.contains('hide-keyboard')) {
+        hideKeyboard()
+    }
     info.innerText = '';
     e.preventDefault();
     resetProperties();
@@ -74,21 +90,23 @@ export const addClickClearHandler = () => {
     })
 }
 
+
+const addMoreMovies = (movie) => {
+    const { nextPage } = properties;
+    getMoviesData(movie, nextPage).then(data => createCards(data))
+    properties.nextPage += 1;
+    properties.prevLastSlide += DEFAULT_NUMBER_SLIDES;
+}
+
 export const addMoreSlides = () => {
     const { swiper } = document.querySelector('.swiper-container')
     const input = document.querySelector('.search-input')
     swiper.on('slideChange', () => {
         const { value } = input;
         if (swiper.realIndex === properties.prevLastSlide && value !== '') {
-            const { nextPage } = properties;
-            getMoviesData(value,nextPage).then(data => createCards(data))
-            properties.nextPage += 1;
-            properties.prevLastSlide += DEFAULT_NUMBER_SLIDES;
+            addMoreMovies(value)
         } else if (swiper.realIndex === properties.prevLastSlide && value === '') {
-            const { nextPage } = properties;
-            getMoviesData(DEFAULT_MOVIE, nextPage).then(data => createCards(data))
-            properties.nextPage += 1;
-            properties.prevLastSlide += DEFAULT_NUMBER_SLIDES;
+            addMoreMovies(DEFAULT_MOVIE)
         }
     });
     
