@@ -1,6 +1,6 @@
 import { showSwiper, hideSwiper } from './swiper';
 import { showSpinner, hideSpinner  } from './spinner';
-import { getMoviesData } from './api.data'
+import { getMoviesData, getTranslation } from './api.data'
 import { properties,  
     DEFAULT_NUMBER_SLIDES, 
     DEFAULT_NUMBER_PREV_LAST_SLIDE, 
@@ -10,14 +10,10 @@ import { properties,
 } from './constants'
 
 const createCard = ({ movie }, reiting) => {
-    const { swiper } = document.querySelector('.swiper-container')
-    if (movie.Poster === 'N/A') {
-        /* eslint-disable no-param-reassign */
-        movie.Poster = POSTER_DEFAULT_URL;
-    }
+    const { swiper } = document.querySelector('.swiper-container');
     const card = `<div class="swiper-slide card">
     <a class="card-header" href="https://www.imdb.com/title/${movie.imdbID}/videogallery" target="_blank">${movie.Title}</a>
-    <div class="card-body" style="background-image: url('${movie.Poster}');"></div>
+    <div class="card-body" style="background-image: url('${movie.Poster}'), url('${POSTER_DEFAULT_URL}');"></div>
     <div class="card-footer">${movie.Year}</div>
     <div class="card-imbd"><span>${reiting}</span></div>
     </div>`
@@ -59,22 +55,40 @@ const resetProperties = () => {
     properties.prevLastSlide = DEFAULT_NUMBER_PREV_LAST_SLIDE;
 }
 
+const infoForRus = (value) => {
+    const info = document.querySelector('.info')
+    info.innerText = `Showing results for '${value}'`
+}
+
 export const searchMovie = (e) => {
+    e.preventDefault();
     const { swiper } = document.querySelector('.swiper-container')   
     const { value } = document.querySelector('.search-input')
     const info = document.querySelector('.info')
     const keyboard = document.querySelector('.keyboard')
+    const isRusReg = /(^[А-я0-9\s]+)(?!.[A-z])$/;
 
     if (!keyboard.classList.contains('hide-keyboard')) {
         hideKeyboard()
     }
-    info.innerText = '';
-    e.preventDefault();
-    resetProperties();
-    showSpinner();
-    hideSwiper();
-    swiper.removeAllSlides()
-    getMoviesData(value).then(data => createCards(data))
+
+    if (isRusReg.test(value)) {
+        getTranslation(value).then(translate => getMoviesData(translate)).then(movie => createCards(movie));
+        getTranslation(value).then(translate => infoForRus(translate));
+        info.innerText = '';
+        resetProperties();
+        showSpinner();
+        hideSwiper();
+        swiper.removeAllSlides()
+    } else {
+        getMoviesData(value).then(data => createCards(data))
+        info.innerText = '';
+        resetProperties();
+        showSpinner();
+        hideSwiper();
+        swiper.removeAllSlides()
+    }
+   
 }
 
 export const addClickSearchHandler = () => {
@@ -90,12 +104,17 @@ export const addClickClearHandler = () => {
     })
 }
 
-
-const addMoreMovies = (movie) => {
+const addMoreMovies = (value) => {
+    const isRusReg = /(^[А-я0-9\s]+)(?!.[A-z])$/;
     const { nextPage } = properties;
-    getMoviesData(movie, nextPage).then(data => createCards(data))
     properties.nextPage += 1;
     properties.prevLastSlide += DEFAULT_NUMBER_SLIDES;
+    if (isRusReg.test(value)) {
+        getTranslation(value).then(translate => getMoviesData(translate, nextPage)).then(movie => createCards(movie));
+    } else {
+        getMoviesData(value, nextPage).then(data => createCards(data))
+    }
+   
 }
 
 export const addMoreSlides = () => {
@@ -108,6 +127,5 @@ export const addMoreSlides = () => {
         } else if (swiper.realIndex === properties.prevLastSlide && value === '') {
             addMoreMovies(DEFAULT_MOVIE)
         }
-    });
-    
-}
+    });  
+};
