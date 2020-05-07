@@ -2,7 +2,7 @@ import Swiper from 'swiper';
 
 export const mySwiper = new Swiper('.swiper-container', { 
       direction: 'horizontal',
-      loop: true,
+      loop: false,
       spaceBetween: 80,
       slidesPerView: 'auto',
       loopedSlides: 10,

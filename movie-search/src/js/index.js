@@ -4,6 +4,8 @@ import { DEFAULT_MOVIE } from './constants';
 import { showSpinner } from './spinner';
 import { getMoviesData } from './api.data'
 import { Keyboard } from './keyboard';
+import { addClickMicHandler } from './mic'
+
 import { createCards, 
   addClickSearchHandler, 
   addClickClearHandler, 
@@ -25,6 +27,7 @@ window.onload = () => {
     addClickSearchHandler();
     addClickClearHandler();
     addClickKeyboardHandler();
+    addClickMicHandler();
     addMoreSlides();
     getMoviesData(DEFAULT_MOVIE).then(data => createCards(data));
     showSpinner();

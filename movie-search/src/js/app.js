@@ -60,8 +60,7 @@ const infoForRus = (value) => {
     info.innerText = `Showing results for '${value}'`
 }
 
-export const searchMovie = (e) => {
-    e.preventDefault();
+export const searchMovie = () => {
     const { swiper } = document.querySelector('.swiper-container')   
     const { value } = document.querySelector('.search-input')
     const info = document.querySelector('.info')
@@ -93,7 +92,10 @@ export const searchMovie = (e) => {
 
 export const addClickSearchHandler = () => {
     const submit = document.querySelector('.search-btn')
-    submit.addEventListener('click', searchMovie)
+    submit.addEventListener('click', (e) => {
+        e.preventDefault();
+        searchMovie();
+    })
 }
 
 export const addClickClearHandler = () => {
@@ -122,9 +124,9 @@ export const addMoreSlides = () => {
     const input = document.querySelector('.search-input')
     swiper.on('slideChange', () => {
         const { value } = input;
-        if (swiper.realIndex === properties.prevLastSlide && value !== '') {
+        if (swiper.activeIndex === properties.prevLastSlide && value !== '') {
             addMoreMovies(value)
-        } else if (swiper.realIndex === properties.prevLastSlide && value === '') {
+        } else if (swiper.activeIndex === properties.prevLastSlide && value === '') {
             addMoreMovies(DEFAULT_MOVIE)
         }
     });  

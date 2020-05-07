@@ -1,5 +1,5 @@
 
-import {  hideSpinner  } from './spinner';
+import { hideSpinner  } from './spinner';
 
 const errorHandler = (error) => {
     const input = document.querySelector('.search-input')
@@ -59,7 +59,6 @@ export const getMoviesData = async(name, page = 1) => {
 
     const response = await fetch(url);
     const data = await response.json();
-
     try {
         if (response.ok) {
             data.Search.forEach( async (item) => {

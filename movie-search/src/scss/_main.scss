@@ -119,7 +119,7 @@ body {
     background-size: 20px;
     background-position: center center;
     background-repeat: no-repeat;
-    right: 150px;
+    right: 185px;
     cursor: pointer;
     opacity: .8;
     transition: .2s;
@@ -128,6 +128,42 @@ body {
 .search-clear:hover {
     opacity: 1;
 }
+
+.search-mic {
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    background-image: url(../assets/img/mic.png);
+    background-size: 27px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    right: 160px;
+    cursor: pointer;
+    opacity: .8;
+    transition: .2s;
+}
+
+.search-mic:hover {
+    opacity: 1;
+}
+
+.mic-active {
+    animation-duration: 1s;
+    animation-name: blink;
+    animation-iteration-count: infinite;
+   
+}
+
+@keyframes blink {
+    from {
+       border: 3px solid red;
+    }
+  
+    to {
+       border:0;
+    }
+  }
 
 .tooltip:hover:after {
     content: attr(data-name);
@@ -292,6 +328,9 @@ content: "";
     display: none;
 }
 .search-tia {
+    display: none;
+}  
+.search-mic {
     display: none;
 }  
 .search-clear {

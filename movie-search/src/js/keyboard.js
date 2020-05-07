@@ -244,8 +244,8 @@ export const Keyboard = {
 		output.setRangeText(' ', output.selectionStart, output.selectionEnd, 'end')
 	},
 
-	addClickEnterHandler(e) {
-		searchMovie(e)
+	addClickEnterHandler() {
+		searchMovie()
 	},
 
 	addClickDelHandler() {
@@ -284,7 +284,7 @@ export const Keyboard = {
 				this.changeLanguage()
 			} else if (btn === 'Enter') {
 				e.preventDefault()
-				this.addClickEnterHandler(e)
+				this.addClickEnterHandler()
 			} else if (btn === 'Del') {
 				e.preventDefault()
 				this.addClickDelHandler()
