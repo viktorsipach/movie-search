@@ -65,7 +65,7 @@ export const searchMovie = () => {
     const { value } = document.querySelector('.search-input')
     const info = document.querySelector('.info')
     const keyboard = document.querySelector('.keyboard')
-    const isRusReg = /(^[А-я0-9\s]+)(?!.[A-z])$/;
+    const isRusReg = /(^[А-я\s]+)(?!.[A-z])$/;
 
     if (!keyboard.classList.contains('hide-keyboard')) {
         hideKeyboard()
