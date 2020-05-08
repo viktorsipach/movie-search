@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 
-import { searchMovie }  from './app'
+import { searchMovie }  from '../app/app.components'
 
 export const Keyboard = {
 

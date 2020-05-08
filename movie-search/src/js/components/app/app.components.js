@@ -1,13 +1,13 @@
-import { showSwiper, hideSwiper } from './swiper';
-import { showSpinner, hideSpinner  } from './spinner';
-import { getMoviesData, getTranslation } from './api.data'
+import { showSwiper, hideSwiper } from '../swiper/swiper.components';
+import { showSpinner, hideSpinner  } from '../spinner/spinner.components';
+import { getMoviesData, getTranslation } from '../../data/api.data'
 import { properties,  
     DEFAULT_NUMBER_SLIDES, 
     DEFAULT_NUMBER_PREV_LAST_SLIDE, 
     DEFAULT_NUMBER_PAGE, 
     POSTER_DEFAULT_URL,
     DEFAULT_MOVIE
-} from './constants'
+} from '../../constants/constants'
 
 const createCard = ({ movie }, reiting) => {
     const { swiper } = document.querySelector('.swiper-container');

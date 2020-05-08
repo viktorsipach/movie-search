@@ -1,5 +1,5 @@
 
-import { hideSpinner  } from './spinner';
+import { hideSpinner  } from '../components/spinner/spinner.components';
 
 const errorHandler = (error) => {
     const input = document.querySelector('.search-input')

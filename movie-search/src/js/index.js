@@ -1,17 +1,17 @@
 import '../css/reset.css';
 import '../scss/style.scss';
-import { DEFAULT_MOVIE } from './constants';
-import { showSpinner } from './spinner';
-import { getMoviesData } from './api.data'
-import { Keyboard } from './keyboard';
-import { addClickMicHandler } from './mic'
+import { DEFAULT_MOVIE } from './constants/constants';
+import { showSpinner } from './components/spinner/spinner.components';
+import { getMoviesData } from './data/api.data'
+import { Keyboard } from './components/keyboard/keyboard.components';
+import { addClickMicHandler } from './components/mic/mic.components'
 
 import { createCards, 
   addClickSearchHandler, 
   addClickClearHandler, 
   addClickKeyboardHandler, 
   addMoreSlides 
-} from './app'
+} from './components/app/app.components'
 
 
 window.onload = () => {

@@ -2,7 +2,7 @@
 /* eslint-disable new-cap */
 /* eslint-disable import/prefer-default-export */
 
-import { searchMovie }  from './app'
+import { searchMovie }  from '../app/app.components'
 
 
 const startSpeaking = () => {
