@@ -55,7 +55,7 @@ const resetProperties = () => {
     properties.prevLastSlide = DEFAULT_NUMBER_PREV_LAST_SLIDE;
 }
 
-const infoForRus = (value) => {
+export const infoForRus = (value) => {
     const info = document.querySelector('.info')
     info.innerText = `Showing results for '${value}'`
 }
