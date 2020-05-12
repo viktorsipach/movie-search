@@ -22,8 +22,7 @@ const createCard = ({ movie }, reiting) => {
 export const createCards = (data) => {
     if (data) {
         const arrMovies = data.Search;
-        arrMovies.forEach((item) => {
-            const movie = item;
+        arrMovies.forEach((movie) => {
             let reiting  = null;
     
             if (movie.reiting === undefined || movie.reiting === 'N/A') {
@@ -122,10 +121,10 @@ export const addMoreSlides = () => {
    
     swiper.on('slideChange', () => {
         const { value } = input;
-        if ((swiper.activeIndex === (swiper.slides.length - DEFAULT_NUMBER_SHOW_SLIDE)) && (value !== '')) {
+        if ((swiper.activeIndex === (swiper.slides.length - DEFAULT_NUMBER_SHOW_SLIDE)) && value) {
             showSpinner()
             addMoreMovies(value)
-        } else if ((swiper.activeIndex === (swiper.slides.length - DEFAULT_NUMBER_SHOW_SLIDE)) && (value === '')) {
+        } else if ((swiper.activeIndex === (swiper.slides.length - DEFAULT_NUMBER_SHOW_SLIDE)) && !value) {
             showSpinner()
             addMoreMovies(DEFAULT_MOVIE)
         }  

@@ -123,7 +123,7 @@ export const Keyboard = {
 	},
 
 	addCapsLockHandler(btn, event) {
-		if (this.properties.capsLock === false) {
+		if (!this.properties.capsLock) {
 			const buttons = document.querySelectorAll('.btn')
 			this.checkPressedBtn(btn, event)
 			buttons.forEach((el) => {
@@ -143,7 +143,7 @@ export const Keyboard = {
 	},
 
 	addShiftHandler(btn, event) {
-		if (this.properties.shift === false) {
+		if (!this.properties.shift) {
 			const specSymbols = ['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '&#8592']
 			const backSlash = document.getElementById('Backslash')
 			const bracketLeft = document.getElementById('BracketLeft')
