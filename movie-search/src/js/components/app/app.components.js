@@ -2,8 +2,7 @@ import { showSwiper, hideSwiper } from '../swiper/swiper.components';
 import { showSpinner, hideSpinner  } from '../spinner/spinner.components';
 import { getMoviesData, getTranslation } from '../../data/api.data'
 import { properties,  
-    DEFAULT_NUMBER_SLIDES, 
-    DEFAULT_NUMBER_PREV_LAST_SLIDE, 
+    DEFAULT_NUMBER_SHOW_SLIDE, 
     DEFAULT_NUMBER_PAGE, 
     POSTER_DEFAULT_URL,
     DEFAULT_MOVIE
@@ -50,9 +49,8 @@ export const addClickKeyboardHandler = () => {
 }
 
 
-const resetProperties = () => {
+export const resetPropNextPage = () => {
     properties.nextPage = DEFAULT_NUMBER_PAGE;
-    properties.prevLastSlide = DEFAULT_NUMBER_PREV_LAST_SLIDE;
 }
 
 export const infoForRus = (value) => {
@@ -75,14 +73,14 @@ export const searchMovie = () => {
         getTranslation(value).then(translate => getMoviesData(translate)).then(movie => createCards(movie));
         getTranslation(value).then(translate => infoForRus(translate));
         info.innerText = '';
-        resetProperties();
+        resetPropNextPage();
         showSpinner();
         hideSwiper();
         swiper.removeAllSlides()
     } else {
         getMoviesData(value).then(data => createCards(data))
         info.innerText = '';
-        resetProperties();
+        resetPropNextPage();
         showSpinner();
         hideSwiper();
         swiper.removeAllSlides()
@@ -110,7 +108,6 @@ const addMoreMovies = (value) => {
     const isRusReg = /(^[А-я0-9\s]+)(?!.[A-z])$/;
     const { nextPage } = properties;
     properties.nextPage += 1;
-    properties.prevLastSlide += DEFAULT_NUMBER_SLIDES;
     if (isRusReg.test(value)) {
         getTranslation(value).then(translate => getMoviesData(translate, nextPage)).then(movie => createCards(movie));
     } else {
@@ -122,12 +119,15 @@ const addMoreMovies = (value) => {
 export const addMoreSlides = () => {
     const { swiper } = document.querySelector('.swiper-container')
     const input = document.querySelector('.search-input')
+   
     swiper.on('slideChange', () => {
         const { value } = input;
-        if (swiper.activeIndex === properties.prevLastSlide && value !== '') {
+        if ((swiper.activeIndex === (swiper.slides.length - DEFAULT_NUMBER_SHOW_SLIDE)) && (value !== '')) {
+            showSpinner()
             addMoreMovies(value)
-        } else if (swiper.activeIndex === properties.prevLastSlide && value === '') {
+        } else if ((swiper.activeIndex === (swiper.slides.length - DEFAULT_NUMBER_SHOW_SLIDE)) && (value === '')) {
+            showSpinner()
             addMoreMovies(DEFAULT_MOVIE)
-        }
+        }  
     });  
 };

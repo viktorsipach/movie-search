@@ -10,7 +10,8 @@ import { createCards,
   addClickSearchHandler, 
   addClickClearHandler, 
   addClickKeyboardHandler, 
-  addMoreSlides 
+  addMoreSlides,
+  resetPropNextPage
 } from './components/app/app.components'
 
 
@@ -29,6 +30,7 @@ window.onload = () => {
     addClickKeyboardHandler();
     addClickMicHandler();
     addMoreSlides();
+    resetPropNextPage();
     getMoviesData(DEFAULT_MOVIE).then(data => createCards(data));
     showSpinner();
 }
